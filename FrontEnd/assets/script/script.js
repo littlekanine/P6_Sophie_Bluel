@@ -1,3 +1,8 @@
+const buttonLogin = document.getElementById("btn-login")
+buttonLogin.addEventListener("click", function(){
+    
+})
+
 async function updateData() {
     
     try {
@@ -13,7 +18,6 @@ async function updateData() {
 }
 
 updateData()
-
 
 async function genereOeuvre(works) {
     try {
@@ -51,8 +55,8 @@ const buttonTous = document.getElementById("btn-tous");
 buttonTous.addEventListener("click", async function () {
     const works = await updateData()
     document.querySelector(".gallery").innerHTML=""
-    genereOeuvre(works)
-    console.log(works)
+    genereOeuvre(works);
+    console.log(works);
 })
 
 const buttonObjets = document.getElementById("btn-objets");
@@ -61,8 +65,8 @@ buttonObjets.addEventListener("click", async function () {
         const oeuvresFiltrees = works.filter(function(oeuvre) {
             return oeuvre.category.name ==="Objets";
         });
-        await genereOeuvre(oeuvresFiltrees)
-        console.log(oeuvresFiltrees)
+        await genereOeuvre(oeuvresFiltrees);
+        console.log(oeuvresFiltrees);
     });    
 
 const buttonAppartement = document.getElementById("btn-appartement")
@@ -71,8 +75,8 @@ buttonAppartement.addEventListener("click", async function() {
     const oeuvresFiltrees = works.filter(function(oeuvre) {
         return oeuvre.category.name === "Appartements"
     })
-    await genereOeuvre(oeuvresFiltrees)
-    console.log(oeuvresFiltrees)
+    await genereOeuvre(oeuvresFiltrees);
+    console.log(oeuvresFiltrees);
 })
   
 const buttonHotelRestaurnt = document.getElementById("btn-hotelslRestaurants")
@@ -82,6 +86,6 @@ buttonHotelRestaurnt.addEventListener("click", async function (){
         return oeuvre.category.name === "Hotels & restaurants"
         
     })
-    await genereOeuvre(oeuvresFiltrees)
-    console.log(oeuvresFiltrees)
+    await genereOeuvre(oeuvresFiltrees);
+    console.log(oeuvresFiltrees);
 })

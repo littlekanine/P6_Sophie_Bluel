@@ -135,7 +135,7 @@ li:hover {
 	gap: 20px;
 }
 
-button {
+.button-filtres {
 	width: 198px;
 	height: 37px;
 	background-color: white;
@@ -145,7 +145,7 @@ button {
 	color: #1D6154;
 }
 
-button:hover {
+.button-filtres:hover {
 	background-color: #1D6154;
 	color: white;
 }
