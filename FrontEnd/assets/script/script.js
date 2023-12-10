@@ -15,11 +15,10 @@ async function updateData() {
 updateData()
 
 
-async function genereOeuvre(_works) {
+async function genereOeuvre(works) {
     try {
-        const works = await updateData();
         const sectionOeuvres = document.querySelector(".gallery");
-        // sectionOeuvres.innerHTML=""
+        sectionOeuvres.innerHTML = "";
 
         for (let i = 0; i < works.length; i++) {
             const oeuvre = works[i];
@@ -37,31 +36,52 @@ async function genereOeuvre(_works) {
             sectionOeuvres.appendChild(oeuvreElement);
         }
     } catch (error) {
-        console.error(`Une erreur s'est produite : ${error.message}`);
+        
     }
 }
+
+genereOeuvre()
+
+window.onload = async function () {
+        const works = await updateData();
+        await genereOeuvre(works);
+};
 
 const buttonTous = document.getElementById("btn-tous");
 buttonTous.addEventListener("click", async function () {
     const works = await updateData()
     document.querySelector(".gallery").innerHTML=""
     genereOeuvre(works)
-    console.log(genereOeuvre)
+    console.log(works)
 })
 
 const buttonObjets = document.getElementById("btn-objets");
 buttonObjets.addEventListener("click", async function () {
-    try {
-        const works = await updateData()
+        const works = await updateData();
         const oeuvresFiltrees = works.filter(function(oeuvre) {
             return oeuvre.category.name ==="Objets";
-        })
-        // document.querySelector(".gallery").innerHTML=""
-        genereOeuvre(oeuvresFiltrees)
+        });
+        await genereOeuvre(oeuvresFiltrees)
         console.log(oeuvresFiltrees)
-    } catch {
-        console.log("erreur")
-    }
     });    
+
+const buttonAppartement = document.getElementById("btn-appartement")
+buttonAppartement.addEventListener("click", async function() {
+    const works = await updateData();
+    const oeuvresFiltrees = works.filter(function(oeuvre) {
+        return oeuvre.category.name === "Appartements"
+    })
+    await genereOeuvre(oeuvresFiltrees)
+    console.log(oeuvresFiltrees)
+})
   
-    genereOeuvre([]);
+const buttonHotelRestaurnt = document.getElementById("btn-hotelslRestaurants")
+buttonHotelRestaurnt.addEventListener("click", async function (){
+    const works = await updateData();
+    const oeuvresFiltrees = works.filter(function(oeuvre) {
+        return oeuvre.category.name === "Hotels & restaurants"
+        
+    })
+    await genereOeuvre(oeuvresFiltrees)
+    console.log(oeuvresFiltrees)
+})
