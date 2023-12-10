@@ -3,6 +3,10 @@
    License: none (public domain)
 */
 
+.flex {
+	display: flex;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -121,6 +125,31 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
+.filtres {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 20px;
+	padding-bottom: 50px;
+	gap: 20px;
+}
+
+button {
+	width: 198px;
+	height: 37px;
+	background-color: white;
+	border: solid 1px #1D6154;
+	border-radius: 20px;
+	font-family: syne;
+	color: #1D6154;
+}
+
+button:hover {
+	background-color: #1D6154;
+	color: white;
+}
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
