@@ -1,91 +1,96 @@
-const buttonLogin = document.getElementById("btn-login")
-buttonLogin.addEventListener("click", function(){
-    
-})
+// Variable
+let works = [];
+const buttonTous = document.getElementById("btn-tous");
+const buttonObjets = document.getElementById("btn-objets");
+const buttonHotelRestaurnt = document.getElementById("btn-hotelslRestaurants")
 
-async function updateData() {
+const buttonLogin = document.getElementById("btn-login")
+// buttonLogin.addEventListener("click", function(){
     
+// })
+
+// Function 
+// Initialization
+window.onload = async function () {
+    const works = await fetchWorks();
+    await generateGallery(works);
+};
+
+async function fetchWorks() {
     try {
-        const reponse = await fetch("http://localhost:5678/api/works");
-        if (!reponse.ok) {
-            throw new Error(`Échec de la requête avec le code d'état : ${reponse.status}`);
-          }
-          const works = await reponse.json();
-          return works;
+        const response = await fetch("http://localhost:5678/api/works")
+            .then((response) => {
+                switch(response.status) {
+                    case 200:
+                        return response.json();
+                    case 500:
+                    default:
+                        throw new Error(`Échec de la requête avec le code d'état : ${response.status}`);
+                    ;
+                }
+            })
+            .then((response) => {
+                works = response;
+
+                return works;
+            });
+
+        return response;
     } catch (error) {
           console.error(`Une erreur s'est produite : ${error.message}`);
     }
 }
 
-updateData()
+async function generateGallery(works) {
+        const gallerySection = document.querySelector(".gallery");
+        gallerySection.innerHTML = "";
 
-async function genereOeuvre(works) {
-    try {
-        const sectionOeuvres = document.querySelector(".gallery");
-        sectionOeuvres.innerHTML = "";
-
-        for (let i = 0; i < works.length; i++) {
-            const oeuvre = works[i];
-
-            const oeuvreElement = document.createElement("figure");
+        works.forEach(work => {
+            const workElement = document.createElement("figure");
             const imageElement = document.createElement("img");
-            imageElement.src = oeuvre.imageUrl;
+            imageElement.src = work.imageUrl;
 
-            const nomElement = document.createElement("p");
-            nomElement.innerText = oeuvre.title;
+            const nameElement = document.createElement("p");
+            nameElement.innerText = work.title;
 
-            oeuvreElement.appendChild(imageElement);
-            oeuvreElement.appendChild(nomElement);
+            workElement.appendChild(imageElement);
+            workElement.appendChild(nameElement);
 
-            sectionOeuvres.appendChild(oeuvreElement);
-        }
-    } catch (error) {
-        
-    }
+            gallerySection.appendChild(workElement);
+        });
 }
 
-genereOeuvre()
 
-window.onload = async function () {
-        const works = await updateData();
-        await genereOeuvre(works);
-};
 
-const buttonTous = document.getElementById("btn-tous");
 buttonTous.addEventListener("click", async function () {
-    const works = await updateData()
     document.querySelector(".gallery").innerHTML=""
-    genereOeuvre(works);
+    generateGallery(works);
     console.log(works);
 })
 
-const buttonObjets = document.getElementById("btn-objets");
+
 buttonObjets.addEventListener("click", async function () {
-        const works = await updateData();
         const oeuvresFiltrees = works.filter(function(oeuvre) {
             return oeuvre.category.name ==="Objets";
         });
-        await genereOeuvre(oeuvresFiltrees);
+        await generateGallery(oeuvresFiltrees);
         console.log(oeuvresFiltrees);
     });    
 
-const buttonAppartement = document.getElementById("btn-appartement")
 buttonAppartement.addEventListener("click", async function() {
-    const works = await updateData();
     const oeuvresFiltrees = works.filter(function(oeuvre) {
         return oeuvre.category.name === "Appartements"
     })
-    await genereOeuvre(oeuvresFiltrees);
+    await generateGallery(oeuvresFiltrees);
     console.log(oeuvresFiltrees);
 })
   
-const buttonHotelRestaurnt = document.getElementById("btn-hotelslRestaurants")
+
 buttonHotelRestaurnt.addEventListener("click", async function (){
-    const works = await updateData();
     const oeuvresFiltrees = works.filter(function(oeuvre) {
         return oeuvre.category.name === "Hotels & restaurants"
         
     })
-    await genereOeuvre(oeuvresFiltrees);
+    await generateGallery(oeuvresFiltrees);
     console.log(oeuvresFiltrees);
 })
