@@ -3,6 +3,10 @@
    License: none (public domain)
 */
 
+* {
+	background-color: #FFFEF8 ;
+}
+
 .flex {
 	display: flex;
 }
@@ -215,5 +219,49 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
+}
+
+/* // login */
+
+.login {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 192px;
+	flex-direction: column;
+}
+
+.login a {
+	color: black;
+	margin-top: 30px;
+	font-weight: 500;
+}
+
+.login-title {
+	color: #1D6154;
+	font-size: 30px;
+	height: 36px;
+	font-weight: 700;	
+	margin-bottom: 73px;
+}
+
+.login h2 {
+	font-family:Work Sans ;
+	font-size: 14px;
+	color: #3D3D3D ;
+	margin-bottom: 10px;
+}
+
+input {
+	height: 51px;
+	width: 379px;
+	border: solid 0px;
+	background-color: white;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	outline: none;
+}
+
+.input input {
+	margin-bottom: 50px ;
 }
 
