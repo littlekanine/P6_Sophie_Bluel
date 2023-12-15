@@ -10,7 +10,7 @@ window.onload = async function () {
     await generateGallery(works);
 };
 
-// Buttons
+// Button outside API 
 
 buttonTous.classList.add("button-filtres", "buttonTous")
     buttonTous.innerText = "Tous"
@@ -27,16 +27,13 @@ async function fetchData(apiEndPoint) {
                     case 500:
                     default:
                         throw new Error(`Échec de la requête avec le code d'état : ${response.status}`);
-                    ;
                 }
             })
             .then((response) => {
-                Data = response;
-
-                return Data;
+                return response;
             });
-
-        return Data;
+        
+        return response;
     } catch (error) {
           console.error(`Une erreur s'est produite : ${error.message}`);
     }
@@ -94,5 +91,6 @@ async function generateGallery(Data) {
 
 buttonTous.addEventListener("click", async function () {
     document.querySelector(".gallery").innerHTML=""
-    fetchData(works);
+    const allWorks = await fetchWorks()
+    generateGallery(allWorks);
 })
