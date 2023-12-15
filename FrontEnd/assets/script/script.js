@@ -1,24 +1,25 @@
 // Variable
 let works = [];
-const buttonTous = document.getElementById("btn-tous");
-const buttonObjets = document.getElementById("btn-objets");
-const buttonHotelRestaurnt = document.getElementById("btn-hotelslRestaurants")
-
-const buttonLogin = document.getElementById("btn-login")
-// buttonLogin.addEventListener("click", function(){
-    
-// })
-
-// Function 
+let categories = []
+const buttonTous = document.createElement("button");
 // Initialization
 window.onload = async function () {
     const works = await fetchWorks();
+    const categories = await fetchCategories();
+    await generateCategories(categories);
     await generateGallery(works);
 };
 
-async function fetchWorks() {
+// Buttons
+
+buttonTous.classList.add("button-filtres", "buttonTous")
+    buttonTous.innerText = "Tous"
+
+// Function 
+
+async function fetchData(apiEndPoint) {
     try {
-        const response = await fetch("http://localhost:5678/api/works")
+        const response = await fetch(`http://localhost:5678/api/${apiEndPoint}`)
             .then((response) => {
                 switch(response.status) {
                     case 200:
@@ -30,22 +31,53 @@ async function fetchWorks() {
                 }
             })
             .then((response) => {
-                works = response;
+                Data = response;
 
-                return works;
+                return Data;
             });
 
-        return response;
+        return Data;
     } catch (error) {
           console.error(`Une erreur s'est produite : ${error.message}`);
     }
 }
+async function fetchCategories() {
+    return fetchData("categories")
+}
 
-async function generateGallery(works) {
+async function fetchWorks() {
+    return fetchData("works")
+}
+
+
+
+async function generateCategories(categories) {
+    const buttonsContainer = document.querySelector(".buttons");
+    buttonsContainer.classList.add("filtres")
+    buttonsContainer.appendChild(buttonTous)
+
+    categories.forEach(categorie => {
+        const buttonsFiltres = document.createElement("button");
+        buttonsContainer.appendChild(buttonsFiltres)
+        buttonsFiltres.classList.add("button-filtres")
+        buttonsFiltres.innerText = categorie.name
+
+        buttonsFiltres.addEventListener("click", async () => {
+            const allWorks = await fetchWorks();
+            const filteredWorks = allWorks.filter(function (work){
+                return work.category.name === categorie.name;
+            });
+            await generateGallery(filteredWorks);
+        });
+    });
+
+}
+
+async function generateGallery(Data) {
         const gallerySection = document.querySelector(".gallery");
         gallerySection.innerHTML = "";
 
-        works.forEach(work => {
+        Data.forEach(work => {
             const workElement = document.createElement("figure");
             const imageElement = document.createElement("img");
             imageElement.src = work.imageUrl;
@@ -60,37 +92,7 @@ async function generateGallery(works) {
         });
 }
 
-
-
 buttonTous.addEventListener("click", async function () {
     document.querySelector(".gallery").innerHTML=""
-    generateGallery(works);
-    console.log(works);
-})
-
-
-buttonObjets.addEventListener("click", async function () {
-        const oeuvresFiltrees = works.filter(function(oeuvre) {
-            return oeuvre.category.name ==="Objets";
-        });
-        await generateGallery(oeuvresFiltrees);
-        console.log(oeuvresFiltrees);
-    });    
-
-buttonAppartement.addEventListener("click", async function() {
-    const oeuvresFiltrees = works.filter(function(oeuvre) {
-        return oeuvre.category.name === "Appartements"
-    })
-    await generateGallery(oeuvresFiltrees);
-    console.log(oeuvresFiltrees);
-})
-  
-
-buttonHotelRestaurnt.addEventListener("click", async function (){
-    const oeuvresFiltrees = works.filter(function(oeuvre) {
-        return oeuvre.category.name === "Hotels & restaurants"
-        
-    })
-    await generateGallery(oeuvresFiltrees);
-    console.log(oeuvresFiltrees);
+    fetchData(works);
 })
