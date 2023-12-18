@@ -282,6 +282,6 @@ input {
 	border: solid 2px green;
 }
 
-.false {
+.invalid {
 	border: solid 2px red;
 }
