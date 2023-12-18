@@ -7,16 +7,17 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<script src="./assets/script/script.js" defer></script>
+    <script src="./script/login.js" defer></script>
+	<!-- <script src="./script/script.js" defer></script> -->
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./style.css">
 </head>
-
+<body class="login-page">
 <header>
     <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
     <nav>
         <ul>
-            <li id="btn-projets" a href="/FrontEnd/index.html">projets</li>
+            <a href="/FrontEnd/index.html" class="decoration-none"><li id="btn-projets">projets</li></a>
             <li>contact</li>
             <li id="btn-login">login</li>
             <li><img src="./icons/instagram.png" alt="Instagram"></li>
@@ -27,13 +28,25 @@
 <main>
     <div class="login">
         <h1 class ="login-title">Login</h1>
-        <div class="input contact">
-            <h2>E-mail</h2>
-            <input>
-            <h2>Mot de passe</h2>
-            <input>
-        </div>
-        <input type="submit" value="Se connecter">
-        <a href = "">Mot de passe oublié</a>
+        <form class="flex">
+            <div class="flex input column">
+                <label for ="email">E-mail</label>
+                    <input type="text" id="email" name="email">
+                <label for ="password">Mot de passe</label>
+                    <input type="text" id="password" name="password">
+            </div>
+            <input type="submit" value="Se connecter">
+        </form>
+            <a href = "">Mot de passe oublié</a>
     </div>  
 </main>
+
+<footer>
+	<nav>
+		<ul>
+			<li>Mentions Légales</li>
+		</ul>
+	</nav>
+</footer>
+</body>
+</html>
