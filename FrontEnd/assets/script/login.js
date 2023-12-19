@@ -2,11 +2,18 @@
 const formLogin = document.querySelector("form");
 const baliseEmail = document.getElementById("email");
 const balisePassword = document.getElementById("password");
-let apiToken = ""
 const inputContainer = document.getElementById("inputContainer")
 const errorMessage = document.createElement("p")
 errorMessage.classList.add("errorMessage")
 inputContainer.appendChild(errorMessage)
+let apiToken = ""
+
+// localStorage
+
+// const token = fetchDataLogin(email, password);
+//         const valeurToken = JSON.stringify(token)
+//         window.localStorage.setItem("token", valeurToken)
+//         console.log(valeurToken)
 
 // Event Listener
 
@@ -17,7 +24,10 @@ formLogin.addEventListener("submit", async (event) => {
     const password = balisePassword.value;
 
     try {
-        const token = await fetchDataLogin(email, password);
+        const token = fetchDataLogin(email, password);
+        const valeurToken = JSON.stringify(token)
+        window.localStorage.setItem("token", valeurToken)
+        console.log(valeurToken)
 
         if (token) {
             window.location.href = "/FrontEnd/index.html";
@@ -53,7 +63,7 @@ async function fetchDataLogin(email, password) {
 
         if ("token" in data && "userId" in data) {
         apiUserId = data.userId;
-         apiToken = data.token;
+        apiToken = data.token;
 
         console.log("Token retrieved from the API:", apiToken);
         console.log("User ID retrieved from the API:", apiUserId);
