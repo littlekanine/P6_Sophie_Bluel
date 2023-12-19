@@ -6,14 +6,6 @@ const inputContainer = document.getElementById("inputContainer")
 const errorMessage = document.createElement("p")
 errorMessage.classList.add("errorMessage")
 inputContainer.appendChild(errorMessage)
-// let apiToken = ""
-
-// localStorage
-
-// const token = fetchDataLogin(email, password);
-//         const valeurToken = JSON.stringify(token)
-//         window.localStorage.setItem("token", valeurToken)
-//         console.log(valeurToken)
 
 // Event Listener
 
@@ -32,7 +24,7 @@ formLogin.addEventListener("submit", async (event) => {
         } else {
             baliseEmail.classList.add("invalid");
             balisePassword.classList.add("invalid");
-            errorMessage.textContent = "Input error: invalid email or password";
+            errorMessage.textContent = "Input error : invalid email or password";
             console.error("Token not recovered. Failed connection.");
         }
 
