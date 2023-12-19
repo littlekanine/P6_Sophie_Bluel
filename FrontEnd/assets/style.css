@@ -285,3 +285,9 @@ input {
 .invalid {
 	border: solid 2px red;
 }
+
+.errorMessage {
+	display: flex;
+	justify-content: center;
+	color: grey;
+}

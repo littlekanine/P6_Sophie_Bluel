@@ -17,7 +17,7 @@
     <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
     <nav>
         <ul>
-            <li id="btn-projets">projets</li>
+            <li>projets</li>
             <li>contact</li>
             <li id="btn-login">login</li>
             <li><img src="./icons/instagram.png" alt="Instagram"></li>
@@ -29,11 +29,11 @@
     <div class="login">
         <h1 class ="login-title">Login</h1>
         <form class="flex">
-            <div class="flex input column">
+            <div id = "inputContainer" class="flex input column">
                 <label for ="email">E-mail</label>
-                    <input type="text" id="email" name="email">
+                    <input type="text" id="email" name="email" autocomplete="email">
                 <label for ="password">Mot de passe</label>
-                    <input type="text" id="password" name="password">
+                    <input type="password" id="password" name="password" autocomplete="password">
             </div>
             <input type="submit" value="Se connecter">
         </form>
