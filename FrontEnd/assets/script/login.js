@@ -1,4 +1,5 @@
 // Variable
+
 const formLogin = document.querySelector("form");
 const baliseEmail = document.getElementById("email");
 const balisePassword = document.getElementById("password");
@@ -20,14 +21,13 @@ formLogin.addEventListener("submit", async (event) => {
 
         if (token) {
             window.localStorage.setItem("token", token);
-            window.location.href = "/FrontEnd/index.html";
+            window.location.href = "index-edit.html";
         } else {
             baliseEmail.classList.add("invalid");
             balisePassword.classList.add("invalid");
             errorMessage.textContent = "Input error : invalid email or password";
             console.error("Token not recovered. Failed connection.");
         }
-
     } catch (error) {
         console.error("An error has occurred :", error);
     }
@@ -42,7 +42,6 @@ async function fetchDataLogin(email, password) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-
         });
 
         if (!response.ok) {

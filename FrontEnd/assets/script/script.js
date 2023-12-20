@@ -1,8 +1,11 @@
 // Variable
+
 let works = [];
 let categories = []
 const buttonTous = document.createElement("button");
+
 // Initialization
+
 window.onload = async function () {
     const works = await fetchWorks();
     const categories = await fetchCategories();
@@ -14,6 +17,13 @@ window.onload = async function () {
 
 buttonTous.classList.add("button-filtres", "buttonTous")
     buttonTous.innerText = "Tous"
+
+buttonTous.addEventListener("click", async function () {
+    document.querySelector(".gallery").innerHTML=""
+    const allWorks = await fetchWorks()
+    generateGallery(allWorks);
+})
+    
 
 // Function 
 
@@ -41,12 +51,9 @@ async function fetchData(apiEndPoint) {
 async function fetchCategories() {
     return fetchData("categories")
 }
-
 async function fetchWorks() {
     return fetchData("works")
 }
-
-
 
 async function generateCategories(categories) {
     const buttonsContainer = document.querySelector(".buttons");
@@ -88,9 +95,3 @@ async function generateGallery(Data) {
             gallerySection.appendChild(workElement);
         });
 }
-
-buttonTous.addEventListener("click", async function () {
-    document.querySelector(".gallery").innerHTML=""
-    const allWorks = await fetchWorks()
-    generateGallery(allWorks);
-})
