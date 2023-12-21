@@ -7,11 +7,13 @@ const buttonTous = document.createElement("button");
 // Initialization
 
 window.onload = async function () {
-    const works = await fetchWorks();
+    works = await fetchWorks();
     const categories = await fetchCategories();
     await generateCategories(categories);
     await generateGallery(works);
 };
+
+// window.localStorage.clear();
 
 // Button outside API 
 
@@ -57,31 +59,30 @@ async function fetchWorks() {
 
 async function generateCategories(categories) {
     const buttonsContainer = document.querySelector(".buttons");
-    buttonsContainer.classList.add("filtres")
     buttonsContainer.appendChild(buttonTous)
 
     categories.forEach(categorie => {
-        const buttonsFiltres = document.createElement("button");
-        buttonsContainer.appendChild(buttonsFiltres)
-        buttonsFiltres.classList.add("button-filtres")
-        buttonsFiltres.innerText = categorie.name
+        
+        const buttonFiltres = document.createElement("button");
+        buttonsContainer.appendChild(buttonFiltres)
+        buttonFiltres.classList.add("button-filtres")
+        buttonFiltres.innerText = categorie.name
 
-        buttonsFiltres.addEventListener("click", async () => {
-            const allWorks = await fetchWorks();
-            const filteredWorks = allWorks.filter(function (work){
+        buttonFiltres.addEventListener("click", async () => {
+            const filteredWorks = works.filter(function (work){
+                console.log(works)
                 return work.category.name === categorie.name;
             });
             await generateGallery(filteredWorks);
         });
     });
-
 }
 
-async function generateGallery(Data) {
+ async function generateGallery(data) {
         const gallerySection = document.querySelector(".gallery");
         gallerySection.innerHTML = "";
 
-        Data.forEach(work => {
+        data.forEach(work => {
             const workElement = document.createElement("figure");
             const imageElement = document.createElement("img");
             imageElement.src = work.imageUrl;
@@ -94,4 +95,15 @@ async function generateGallery(Data) {
 
             gallerySection.appendChild(workElement);
         });
+}
+
+const storedToken = sessionStorage.getItem("token");
+
+if (storedToken) {
+    const openModal = document.getElementById("open-modal");
+    openModal.classList.remove("invisible");
+    console.log(storedToken)
+} else {
+    // Le token n'est pas présent dans la session
+    console.log("Aucun token trouvé dans la session.");
 }
