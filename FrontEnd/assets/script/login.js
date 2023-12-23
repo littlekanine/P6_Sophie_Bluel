@@ -5,8 +5,9 @@ const baliseEmail = document.getElementById("email");
 const balisePassword = document.getElementById("password");
 const inputContainer = document.getElementById("inputContainer")
 const errorMessage = document.createElement("p")
-errorMessage.classList.add("errorMessage")
 inputContainer.appendChild(errorMessage)
+errorMessage.classList.add("errorMessage")
+
 
 // Event Listener
 
@@ -45,12 +46,8 @@ async function fetchDataLogin(email, password) {
     .then((response) => {
         if(response.token) {
             window.sessionStorage.setItem("token", response.token);
-            // Afficher sur le index.html : bouton modifier, la  baniere, passer "login" en "logout"
             // Récupérer la div qui continent le bouton modifer -> ajouter une class qui ajoute "display: block". -> display: none -> display: block
-            // Rediriger vers index.html
-
             window.location.href = "../index.html";
-
 
             return response.token;
         }
@@ -58,3 +55,4 @@ async function fetchDataLogin(email, password) {
         throw new Error(`No token in the response : ${response}`);
     });
 }
+

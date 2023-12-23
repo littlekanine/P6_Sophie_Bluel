@@ -1,8 +1,21 @@
-// Variable
+// Variable Array
 
-let works = [];
+export let works = [];
 let categories = []
+
+// Variable buttons 
+const buttonsContainer = document.querySelector(".buttons");
 const buttonTous = document.createElement("button");
+
+//variable Login
+const logIn = document.getElementById("btn-login")
+const btnLogOut = document.getElementById("btn-logout");
+
+//variable modal
+const editMode = document.querySelector(".edit-mode")
+const openModal = document.getElementById("open-modal");
+
+export const nameElement = document.createElement("p");
 
 // Initialization
 
@@ -58,7 +71,6 @@ async function fetchWorks() {
 }
 
 async function generateCategories(categories) {
-    const buttonsContainer = document.querySelector(".buttons");
     buttonsContainer.appendChild(buttonTous)
 
     categories.forEach(categorie => {
@@ -78,16 +90,15 @@ async function generateCategories(categories) {
     });
 }
 
- async function generateGallery(data) {
-        const gallerySection = document.querySelector(".gallery");
-        gallerySection.innerHTML = "";
+async function generateGallery(data) {
+    const gallerySection = document.querySelector(".gallery");
+    gallerySection.innerHTML = "";
 
         data.forEach(work => {
             const workElement = document.createElement("figure");
             const imageElement = document.createElement("img");
             imageElement.src = work.imageUrl;
 
-            const nameElement = document.createElement("p");
             nameElement.innerText = work.title;
 
             workElement.appendChild(imageElement);
@@ -97,13 +108,34 @@ async function generateCategories(categories) {
         });
 }
 
+export {generateGallery}
+
 const storedToken = sessionStorage.getItem("token");
 
 if (storedToken) {
-    const openModal = document.getElementById("open-modal");
+    buttonsContainer.classList.add("invisible")
     openModal.classList.remove("invisible");
+    editMode.classList.remove("invisible")
+    logIn.classList.add("invisible")
+
     console.log(storedToken)
 } else {
-    // Le token n'est pas présent dans la session
-    console.log("Aucun token trouvé dans la session.");
+    const logOut = document.getElementById("btn-logout")
+    logOut.classList.add("invisible")
+    openModal.classList.add("invisible");
+    editMode.classList.add("invisible")
+    logIn.classList.remove("invisible")
+
+    console.log(storedToken)
+
+}
+
+btnLogOut.addEventListener("click", (event) => {
+    
+    logOut()
+})
+
+function logOut() {
+    sessionStorage.removeItem("token")
+    console.log("token retiré")
 }

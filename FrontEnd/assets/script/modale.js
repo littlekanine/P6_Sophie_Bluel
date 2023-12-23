@@ -1,23 +1,21 @@
-// import { generateGallery } from "./script.js"
+//import function
 
-async function runGenereteGallery() {
-    const data = await fetch ('http://localhost:5678/api/works')
-    await generateGallery(data)
-}
+import { generateGallery } from "./script.js"
 
 // Variable
-
+import { nameElement } from "./script.js"
+import { works } from "./script.js"
 let modal = null
-
-// add Elements
 
 const modalWrap = document.createElement("div")
 modalWrap.classList.add("modal-wrapper")
 
 const wrapContent = document.createElement("article")
 modalWrap.appendChild(wrapContent)
+
 const titleWrap = document.createElement("h3")
 wrapContent.appendChild(titleWrap)
+
 titleWrap.innerText="Galerie Photo"
 titleWrap.classList.add("title-wrap")
 
@@ -25,23 +23,28 @@ const galleryWrap = document.createElement("div")
 wrapContent.appendChild(galleryWrap)
 galleryWrap.classList.add("gallery")
 
+// Function open/close modale
 
-
-
-// Function
-
-const openModal = function (e) {
+function openModale(e) {
     e.preventDefault();
-    const target = document.getElementById("modal1");
+    const target = document.getElementById("modaleRemoveGallery");
     target.appendChild(modalWrap)
     target.style.display = "flex";
-    target.setAttribute("aria-modal", "true");
     modal = target
+
+    generateGallery(works)
+    galleryWrap.classList.remove("gallery")
+    galleryWrap.classList.add("gallery-wrap")
+    if (nameElement) {
+        nameElement.remove();
+    }
+    
     modal.addEventListener('click' , closeModal)
+
 };
 
-const modalLink = document.querySelector('.open-modal');
-modalLink.addEventListener('click', openModal);
+const modalLink = document.getElementById('open-modal');
+modalLink.addEventListener('click', openModale);
 
 const closeModal = function(e) {
     e.preventDefault()
@@ -50,41 +53,8 @@ const closeModal = function(e) {
     modal.removeAttribute("aria-modal");
 }
 
+//generate gallery in modal
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const modal = document.getElementById("modal1")
-//     modal.addEventListener('click' , openModal)
-
-// function openModal(e) {
-//     e.preventDefault()
-//     const target = document.querySelector(e.target.getAttribute('href'))
-//     target.style.display = null;
-// }
 
 
