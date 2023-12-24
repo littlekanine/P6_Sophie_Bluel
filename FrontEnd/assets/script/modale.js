@@ -1,14 +1,15 @@
 //import function
-
 import { generateGallery } from "./script.js"
 
 // Variable
 import { nameElement } from "./script.js"
 import { works } from "./script.js"
+
 let modal = null
 
 const modalWrap = document.createElement("div")
 modalWrap.classList.add("modal-wrapper")
+console.log(modalWrap)
 
 const wrapContent = document.createElement("article")
 modalWrap.appendChild(wrapContent)
@@ -25,36 +26,34 @@ galleryWrap.classList.add("gallery")
 
 // Function open/close modale
 
-function openModale(e) {
-    e.preventDefault();
-    const target = document.getElementById("modaleRemoveGallery");
-    target.appendChild(modalWrap)
-    target.style.display = "flex";
-    modal = target
-
-    generateGallery(works)
-    galleryWrap.classList.remove("gallery")
-    galleryWrap.classList.add("gallery-wrap")
-    if (nameElement) {
-        nameElement.remove();
-    }
-    
-    modal.addEventListener('click' , closeModal)
-
-};
-
 const modalLink = document.getElementById('open-modal');
+const target = document.getElementById('modal1');
 modalLink.addEventListener('click', openModale);
 
-const closeModal = function(e) {
-    e.preventDefault()
-    if (modal === null) return
-    modal.style.display = "none";
-    modal.removeAttribute("aria-modal");
+function openModale(e) {
+    e.preventDefault();
+    if (modal === null) {
+        target.appendChild(modalWrap);
+        target.style.display="flex"
+        modal = target;
+
+        generateGallery(works);
+        galleryWrap.classList.remove('gallery');
+        galleryWrap.classList.add('gallery-wrap');
+        if (nameElement) {
+            nameElement.remove();
+        }
+
+        // Ajouter un écouteur d'événements pour fermer la modale en cliquant à l'extérieur
+        target.addEventListener('click', closeModal);
+    }
 }
 
-//generate gallery in modal
+function closeModal() {
+    if(modal === null) return;
 
+    modal.style.display = "none";
+    target.classList.add("invisible");
 
-
-
+    target.removeEventListener('click', closeModal);
+}
