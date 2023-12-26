@@ -70,6 +70,8 @@ async function fetchWorks() {
     return fetchData("works")
 }
 
+export {fetchWorks}
+
 async function generateCategories(categories) {
     buttonsContainer.appendChild(buttonTous)
 
@@ -108,7 +110,7 @@ async function generateGallery(data) {
         });
 }
 
-export {generateGallery}
+// export {generateGallery}
 
 const storedToken = sessionStorage.getItem("token");
 
