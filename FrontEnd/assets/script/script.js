@@ -130,10 +130,7 @@ if (storedToken) {
 
 }
 
-btnLogOut.addEventListener("click", (event) => {
-    
-    logOut()
-})
+btnLogOut.addEventListener("click", logOut)
 
 function logOut() {
     sessionStorage.removeItem("token")

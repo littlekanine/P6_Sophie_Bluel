@@ -9,7 +9,7 @@ const modalWrap = document.getElementById("modal-wrap")
 
 const wrapContent = document.querySelector(".wrap-content")
 
-const galleryWrap = document.querySelector(".gallery-wrap")
+const galleryWrap = document.getElementById("works-wrap");
 
 // Function open/close modale
 
@@ -17,35 +17,41 @@ const modalLink = document.getElementById('open-modal');
 modalLink.addEventListener('click', openModale);
 
 const target = document.getElementById('modal1');
+target.addEventListener('click', closeModal);
 
 let modal = null
+
+async function loadGallery(works) {
+    try {
+        const galleryContent = await generateGallery(works);
+        galleryWrap.innerHTML = galleryContent;
+    } catch (error) {
+        console.error("Une erreur s'est produite lors de la génération de la galerie :", error);
+    }
+}
 
 function openModale(e) {
     e.preventDefault();
     if (modal === null) {
         modal = target;
         target.classList.remove("invisible");
-        console.log("c'est good ?")
-        generateGallery(works);
+        target.classList.add("flex")
         galleryWrap.classList.remove('gallery');
         galleryWrap.classList.add('gallery-wrap');
+        loadGallery(works)
+        // galleryWrap.innerHTML = generateGallery(works)
+        console.log(works)
         if (nameElement) {
             nameElement.remove();
         }
-
-        // target.addEventListener('click', closeModal);
     }
-    return modal
 }
 
 function closeModal(e) {
-    e.preventDefault
+    e.preventDefault();
     if(modal === null) return;
-
-    target.classList.add("invisible");
-
-    // target.addEventListener('click', closeModal);
-    return modal
+    if (!modalWrap.contains(e.target)) {
+        target.classList.add("invisible");
+        modal = null;
+    }
 }
-
-target.addEventListener('click', closeModal);
