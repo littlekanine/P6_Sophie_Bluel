@@ -21,15 +21,9 @@ target.addEventListener('click', closeModal);
 
 let modal = null
 
-// async function loadGallery() {
-//     try {
-//         console.log(works)
-//         const galleryContent = await generateGallery(works);
-//         worksWrap.innerHTML = galleryContent;
-//     } catch (error) {
-//         console.error("Une erreur s'est produite lors de la génération de la galerie :", error);
-//     }
-// }
+async function generateGalleryModal (worksModal) {
+    
+}
 
 // creer nv fonction generate galleryModal --> for each / similaire + div trash button
 
