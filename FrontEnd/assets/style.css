@@ -11,6 +11,10 @@
 	gap: 5px;
 }
 
+.grey {
+	background-color: #A7A7A7 !important;
+}
+
 .icon-edit {
 	color: inherit;
 	background-color: black;
@@ -19,6 +23,10 @@
 
 .flex {
 	display: flex;
+}
+
+.start {
+	justify-content: flex-start;
 }
 
 .column {
@@ -392,11 +400,12 @@ input {
 	border-top: 1px solid #B3B3B3 ;
 }
 
-.width-button-wrap {
+.width-input-wrap {
 	width: 237px !important;
 }
 
 .trash-wrap {
+	/* display: none; */
 	position: relative;
 	bottom: 100px;
 	left: 55px;
@@ -404,16 +413,68 @@ input {
 	width: 17px;
 	height: 17px;
 	background-color: black;
+	border: 0px;
 }
 
-.trash-icone {
+.trash-icone::before {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 9px;
-	height: 9px;
+	font-size: 10px;
 	content: "\f2ed";
 	color: #FFFFFF;
-	font-family: 'Font Awesome 6 Free';
+	font-family: 'Font Awesome 6 free';
 }
+
+.add-img {
+	border-radius: 10px ;
+	width: 420px;
+	height: 169px;
+	background-color: #E8F1F6 ;
+	margin-top: 40px;
+	margin-left: 100px ;
+	margin-bottom: 20px;
+}
+
+.icone-picture {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 68px ;
+	width: 420px;
+	height: 80px;
+	color: #B9C5CC;
+}
+
+.input-add-picture {
+	justify-content: center;
+	width: 173px !important;
+	background-color: #CBD6DC !important;
+	margin: 0 !important;
+	padding: 10px;
+	color: #306685 !important;
+	padding-bottom: 10px !important;
+}
+
+.p-picture {
+	font-size:10px ;
+	padding-top: 10px;
+}
+
+.input-img {
+	margin-top: 10px;
+	width: 420px;
+}
+
+.arrow {
+	position: relative;
+	bottom: 70px;
+	left: 20px;
+	font-size: 21px;
+}
+/* .works-wrap img:hover .trash-wrap {
+	display: block;
+} */
+
+
 
