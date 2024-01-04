@@ -70,7 +70,7 @@ async function fetchWorks() {
     return fetchData("works")
 }
 
-export {fetchWorks}
+export {fetchData}
 
 async function generateCategories(categories) {
     buttonsContainer.appendChild(buttonTous)
