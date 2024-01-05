@@ -113,6 +113,7 @@ async function generateGallery(data) {
 // export {generateGallery}
 
 const storedToken = sessionStorage.getItem("token");
+export {storedToken}
 
 if (storedToken) {
     buttonsContainer.classList.add("invisible")

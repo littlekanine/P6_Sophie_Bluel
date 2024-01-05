@@ -1,6 +1,6 @@
 // Variable
-import { fetchData } from "./script.js";
 import { works } from "./script.js"
+import { storedToken } from "./script.js";
 
 const modalWrap = document.getElementById("modal-wrap")
 
@@ -99,10 +99,19 @@ function openModaleAddWorks(e) {
 // Delete work
 
 async function deleteWork(workId) {
-    const response = await fetch(`http://localhost:5678/work/${workId}`, {
+    const token = storedToken
+    const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`},
+        
     });
+    // if (!works.includes(workId)) {
+    //     console.log(`L'élément avec l'ID ${workId} n'existe pas.`);
+    //     return;
+    // }
+
+    console.log(response)
     try {
         switch(response.status) {
             case 200:
@@ -113,8 +122,8 @@ async function deleteWork(workId) {
             case 401 : 
                 console.log("Unauthorized")
                 break;
-                default:
-            throw new Error(`error : ${response.status}`);
+            default:
+                throw new Error(`error : ${response.status}`);
         }            
     } catch (error) {
             throw new Error(`error : ${error.message}`);
