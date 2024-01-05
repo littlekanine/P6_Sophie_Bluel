@@ -51,11 +51,16 @@
 			<div id="modal1" class="modal invisible" role="dialog">
 				<div id="modal-wrap" class="modal-wrapper">
 					<div id="modal-content">
-						<h3 class="title-wrap" id="title-wrap">Gallerie Photo</h3>
-						<i class="fa-solid fa-arrow-left arrow invisible"></i>
-						<div class="works-wrap" id="worksWrap">
+						<div class="gallery-modal flex align-center column">
+							<h3 class="title-wrap" id="title-wrap">Gallerie Photo</h3>
+							<div class="works-wrap" id="worksWrap">
+							</div>
+							<div class="border-wrap"></div>
+							<input type="submit" id="add-works" value="Ajouter une photo" class="flex center width-input-wrap">
 						</div>
 						<div class="div-picture invisible column">
+							<h3 class="title-wrap">Ajout Photos</h3>
+							<i class="fa-solid fa-arrow-left arrow"></i>
 							<div class="add-img flex center  align-center column">
 								<i class="fa-regular fa-image icone-picture"></i>
 								<input type="submit" class="flex input-add-picture" value="+ Ajouter une photo"></input>
@@ -66,12 +71,10 @@
 								<input type="text" class="flex input-img">
 								<h3 class="start input-img">Catégorie</h3>
 								<input type="text" class="flex input-img">
+								<div class="border-wrap"></div>
+								<input type="submit" id="valid" value="Valider" class="center width-input-wrap grey">
 							</div>
 						</div>
-						<div class="border-wrap">
-						</div>
-						<input type="submit" id="add-works" value="Ajouter une photo" class="flex center width-input-wrap">
-						<input type="submit" id="valid" value="Valider" class="invisible center width-input-wrap grey">
 					</div>
 				</div>
 			</div>

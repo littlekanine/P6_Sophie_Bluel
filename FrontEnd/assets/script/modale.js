@@ -47,54 +47,6 @@ function closeModal(e) {
     }
 }
 
-// switch to modal addWorks
-
-function openModaleAddWorks(e) {
-    e.preventDefault();
-
-        const addImg = document.querySelector(".div-picture")
-        addImg.classList.remove("invisible")
-        addImg.classList.add("flex")
-        titleWrap.innerText= "Ajout Photos"
-        addWorks.classList.add("invisible")
-        worksWrap.innerHTML = ""
-        worksWrap.classList.add("invisible");
-        worksWrap.classList.add("invisible")
-        valid.classList.remove("invisible")
-        valid.classList.add("flex")
-        arrowReturn.classList.remove("invisible")
-        arrowReturn.classList.add("flex")
-        
-        arrowReturn.addEventListener("click", function(e) {
-            e.preventDefault();
-            const content = document.querySelector(".div-picture");
-            titleWrap.innerHTML = "Galarie Photos";
-            content.innerHTML = "";
-            worksWrap.classList.remove("invisible");
-            addWorks.classList.remove("invisible");
-            valid.classList.add("invisible");
-            generateGalleryWrap(works);
-        });
-}
-
-//I have a big doubt, I'm sure we can do something else *****
-
-// function resetModale() {
-//     const addImg = document.querySelector(".div-picture");
-//     addImg.classList.remove("flex");
-//     addImg.classList.add("invisible");
-//     titleWrap.innerText = "Gallerie Photo";
-//     addWorks.classList.remove("invisible");
-//     worksWrap.classList.add("works-wrap");
-//     worksWrap.classList.remove("invisible");
-//     valid.classList.add("invisible");
-//     valid.classList.remove("flex");
-//     arrowReturn.classList.add("invisible");
-//     arrowReturn.classList.remove("flex");
-// }
-
-//****** */
-
 // generate Gallery Wrap
 
 function generateGalleryWrap(works) {
@@ -116,22 +68,32 @@ function generateGalleryWrap(works) {
         
         worksWrap.appendChild(workElement)
 
-        const borderWrap = document.createElement("div")
-        borderWrap.classList.add("border-wrap")
-
+        const workId = work.id
         trashWrap.addEventListener("click" , function(e) {
             e.preventDefault();   
-            const workId = work.id
-            console.log('ID récupéré :', workId);
-            // try {
-            //     const deletedWork = await deleteWork("works", workId);
-            //     console.log('work delete :', deletedWork);
-            // } catch (error) {
-            //     console.error('error :', error.message);
-            // }
+            console.log(workId)
+
             deleteWork(workId)
         });
     });    
+}
+
+// switch to modal addWorks
+
+function openModaleAddWorks(e) {
+    e.preventDefault();
+        const galleryModal = document.querySelector(".gallery-modal")
+        galleryModal.classList.add("invisible")
+        const addImg = document.querySelector(".div-picture")
+        addImg.classList.remove("invisible")
+        addImg.classList.add("flex")
+        
+        arrowReturn.addEventListener("click", function(e) {
+            e.preventDefault();
+            const pictureModal = document.querySelector(".div-picture");
+            pictureModal.classList.add("invisible")
+            galleryModal.classList.remove("invisible")
+        });
 }
 
 // Delete work
@@ -143,11 +105,11 @@ async function deleteWork(workId) {
     });
     try {
         switch(response.status) {
-                case 200:
-                    // Rechercher un work a partir du workId -> const work
-                    // works.removeItem(work);
-                    // re-generer les galleries
-                    work.removeI
+            case 200:
+                console.log('ID récupéré :', workId);
+                works.removeItem(workId);
+                generateGalleryWrap(works)
+                break;
             case 401 : 
                 console.log("Unauthorized")
                 break;
