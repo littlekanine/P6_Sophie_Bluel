@@ -2,6 +2,8 @@
 import { works } from "./script.js"
 import { storedToken } from "./script.js";
 
+let regex = RegExp ("a-z0-9._-")
+
 const modalWrap = document.getElementById("modal-wrap")
 
 const modalLink = document.getElementById('open-modal');
@@ -16,8 +18,6 @@ const titleWrap = document.getElementById("title-wrap")
 
 const addWorks = document.getElementById("add-works");
 addWorks.addEventListener("click" , openModaleAddWorks);
-
-const valid = document.getElementById("valid")
 
 const arrowReturn = document.querySelector(".arrow")
 
@@ -96,6 +96,53 @@ function openModaleAddWorks(e) {
         });
 }
 
+//addWorks
+
+const addPicture = document.getElementById("add-picture")
+const picture = document.getElementById("picture")
+const pictureIcon =document.getElementById("picture-icone")
+
+addPicture.addEventListener("click", function() {
+    pictureIcon.classList.add("invisible")
+    const inputPicture = document.createElement("input");
+    picture.appendChild(inputPicture)
+        input.type = "file";
+        input.accept = "image/*";
+
+})
+const inputAddWorks = document.querySelector(".input-img")
+let resultat = regex.test(inputAddWorks.value)
+
+const valid = document.getElementById("valid")
+valid.addEventListener("click", function() {
+    addWork(work)
+})
+
+async function addWork (work) {
+    if (resultat) {
+        const response = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(work),
+        })
+        .then((response) => {
+            switch(response.status) {
+                case 201:
+                    generateGalleryWrap(works);
+                break;
+                case 400: 
+                    console.log("Bad Request");
+                break;
+                case 401:
+                console.log("Unauthorized")
+                break;
+            }
+        })
+    } else {
+        console.log("probleme")
+    }
+}
+
 // Delete work
 
 async function deleteWork(workId) {
@@ -103,21 +150,15 @@ async function deleteWork(workId) {
     const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`},
-        
+            "Authorization": `Bearer ${token}`},
     });
-    // if (!works.includes(workId)) {
-    //     console.log(`L'élément avec l'ID ${workId} n'existe pas.`);
-    //     return;
-    // }
-
     console.log(response)
     try {
         switch(response.status) {
             case 200:
                 console.log('ID récupéré :', workId);
                 works.removeItem(workId);
-                generateGalleryWrap(works)
+                // generateGalleryWrap(works)
                 break;
             case 401 : 
                 console.log("Unauthorized")
@@ -129,12 +170,6 @@ async function deleteWork(workId) {
             throw new Error(`error : ${error.message}`);
     };
 }
-
-// suppression : pas recall Api/ pas de refresh 
-//event.listener sur les trash buttons pour chaque work dans la gallery 
-// dans l'event je recup l'id --> call API delete // verif du call API /le retrouver a partir de l'id
-//enleve le work de la global avec javascript ("remove item")
-//si bien supprimer je regenere les gallery 
 
 // ajout : same same but different 
 // crea variable new work , que j'ajoute a mon tableau de works et regenerate gallery 

@@ -8,7 +8,6 @@ const errorMessage = document.createElement("p")
 inputContainer.appendChild(errorMessage)
 errorMessage.classList.add("errorMessage")
 
-
 // Event Listener
 
 formLogin.addEventListener("submit", async (event) => {
@@ -17,11 +16,8 @@ formLogin.addEventListener("submit", async (event) => {
     const email = baliseEmail.value;
     const password = balisePassword.value;
 
-    // Faire une verification que email et password continent quelque chose. Si oui -> faire le fetch , si non -> afficher une message d'erreur ou mettre rouge
-
     await fetchDataLogin(email, password);
 });
-
 
 // function for data recovery from the API
 
@@ -46,7 +42,6 @@ async function fetchDataLogin(email, password) {
     .then((response) => {
         if(response.token) {
             window.sessionStorage.setItem("token", response.token);
-            // Récupérer la div qui continent le bouton modifer -> ajouter une class qui ajoute "display: block". -> display: none -> display: block
             window.location.href = "../index.html";
 
             return response.token;
@@ -55,4 +50,3 @@ async function fetchDataLogin(email, password) {
         throw new Error(`No token in the response : ${response}`);
     });
 }
-
