@@ -146,7 +146,9 @@ async function addWork (work) {
 // Delete work
 
 async function deleteWork(workId) {
-    const token = storedToken
+    // event.preventDefault();
+
+    const token = storedToken;
     const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json",
@@ -156,8 +158,9 @@ async function deleteWork(workId) {
     try {
         switch(response.status) {
             case 200:
+                // event.preventDefault()
                 console.log('ID récupéré :', workId);
-                works.removeItem(workId);
+                // works.removeItem(workId);
                 // generateGalleryWrap(works)
                 break;
             case 401 : 
