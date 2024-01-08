@@ -1,6 +1,7 @@
 // Variable Array
 
 export let works = [];
+export let newWorks = []
 let categories = []
 
 // Variable buttons 

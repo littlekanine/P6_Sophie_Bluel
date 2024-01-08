@@ -1,5 +1,6 @@
 // Variable
 import { works } from "./script.js"
+import { newWorks } from "./script.js";
 import { storedToken } from "./script.js";
 
 let regex = RegExp ("a-z0-9._-")
@@ -102,14 +103,27 @@ const addPicture = document.getElementById("add-picture")
 const picture = document.getElementById("picture")
 const pictureIcon =document.getElementById("picture-icone")
 
-addPicture.addEventListener("click", function() {
-    pictureIcon.classList.add("invisible")
+function createPictureForm() {
+    event.preventDefault();
+    pictureIcon.classList.add("invisible");
     const inputPicture = document.createElement("input");
-    picture.appendChild(inputPicture)
-        input.type = "file";
-        input.accept = "image/*";
 
-})
+    picture.appendChild(inputPicture);
+        inputPicture.type = "file";
+        inputPicture.accept = "image/*";
+
+        inputPicture.addEventListener("change", function() {
+            const selectedFile = inputPicture.files[0];
+        });
+
+        if (selectedFile) {
+            console.log("Fichier sélectionné :", selectedFile.name);
+        }
+    addPicture.removeEventListener("click", createPictureForm);
+}
+
+addPicture.addEventListener("click", createPictureForm)
+
 const inputAddWorks = document.querySelector(".input-img")
 let resultat = regex.test(inputAddWorks.value)
 
