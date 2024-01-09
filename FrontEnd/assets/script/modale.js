@@ -99,38 +99,63 @@ function openModaleAddWorks(e) {
 
 //addWorks
 
-const addPicture = document.getElementById("add-picture")
-const picture = document.getElementById("picture")
-const pictureIcon =document.getElementById("picture-icone")
+const buttonAddPicture = document.getElementById("button-add-picture");
+const inputSelectPicture = document.getElementById("input-select-picture");
+const addPicture = document.getElementById("add-picture");
+const pictureIcon = document.getElementById("picture-icone");
+const custombutton = document.getElementById("customButton");
+const dropArea = document.getElementById("dropArea"); 
+const previewImage = document.getElementById("previewImage");
+
+function handleFile(file) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        localStorage.setItem('image', reader.result);
+        previewImage.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+}
 
 function createPictureForm() {
     event.preventDefault();
     pictureIcon.classList.add("invisible");
-    const inputPicture = document.createElement("input");
+    buttonAddPicture.classList.add("invisible");
+    inputSelectPicture.classList.remove("invisible");
+    dropArea.classList.remove("invisible");
 
-    picture.appendChild(inputPicture);
-        inputPicture.type = "file";
-        inputPicture.accept = "image/*";
+    dropArea.addEventListener('dragover', function (event) {
+        event.preventDefault();
+        dropArea.classList.remove("invisible");
+    });
 
-        inputPicture.addEventListener("change", function() {
-            const selectedFile = inputPicture.files[0];
-        });
+    dropArea.addEventListener('dragleave', function () {
+        dropArea.classList.remove("invisible");
+    });
 
-        if (selectedFile) {
-            console.log("Fichier sélectionné :", selectedFile.name);
+    dropArea.addEventListener('drop', function (event) {
+        event.preventDefault();
+        dropArea.classList.add("invisible");
+
+        const file = event.dataTransfer.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+            handleFile(file);
+            custombutton.classList.add("invisible")
+            console.log("Changement détecté (via glisser-déposer)");
+        } else {
+            console.log("Le fichier n'est pas une image.");
         }
+    });
+
     addPicture.removeEventListener("click", createPictureForm);
 }
 
-addPicture.addEventListener("click", createPictureForm)
+addPicture.addEventListener("click", createPictureForm);
 
-const inputAddWorks = document.querySelector(".input-img")
-let resultat = regex.test(inputAddWorks.value)
-
-const valid = document.getElementById("valid")
-valid.addEventListener("click", function() {
-    addWork(work)
-})
+const title = document.getElementById("title");
+title = stringify.JSON
+const category = document.getElementById("category")
 
 async function addWork (work) {
     if (resultat) {
@@ -160,7 +185,6 @@ async function addWork (work) {
 // Delete work
 
 async function deleteWork(workId) {
-    // event.preventDefault();
 
     const token = storedToken;
     const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
@@ -172,10 +196,7 @@ async function deleteWork(workId) {
     try {
         switch(response.status) {
             case 200:
-                // event.preventDefault()
                 console.log('ID récupéré :', workId);
-                // works.removeItem(workId);
-                // generateGalleryWrap(works)
                 break;
             case 401 : 
                 console.log("Unauthorized")
