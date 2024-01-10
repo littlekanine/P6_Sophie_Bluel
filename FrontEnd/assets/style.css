@@ -11,6 +11,10 @@
 	gap: 5px;
 }
 
+.button-green {
+	background-color: #1D6154;
+}
+
 .grey {
 	background-color: #A7A7A7 !important;
 }
@@ -403,7 +407,6 @@ input {
 }
 
 .trash-wrap {
-	/* display: none; */
 	position: relative;
 	bottom: 100px;
 	left: 55px;
@@ -430,7 +433,6 @@ input {
 	height: 169px;
 	background-color: #E8F1F6 ;
 	margin-top: 40px;
-	margin-left: 100px ;
 	margin-bottom: 20px;
 }
 

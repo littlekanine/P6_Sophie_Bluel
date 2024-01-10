@@ -8,8 +8,8 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<script type="module" src ="./assets/script/script.js" defer></script>
 	<script type="module" src ="./assets/script/modale.js" defer></script>
+	<script type="module" src ="./assets/script/script.js" defer></script>
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
@@ -61,32 +61,36 @@
 						<div class="div-picture invisible column">
 							<h3 class="title-wrap">Ajout Photos</h3>
 							<i class="fa-solid fa-arrow-left arrow"></i>
-							<div class="add-img flex center  align-center column">
-								<div id="button-add-picture" class="flex center align-center column">
-									<i class="fa-regular fa-image icone-picture" id="picture-icone"></i>
-									<input type="submit" id="add-picture" class="flex input-add-picture" value="+ Ajouter une photo"></input>
-									<p class="p-picture">jpg, png : 4mo max</p>
+							<form id="my-form-new-work"  class="flex  center align-center column">
+								<div class="add-img flex center  align-center column">
+									<div id="button-add-picture" class="flex center align-center column">
+										<i class="fa-regular fa-image icone-picture" id="picture-icone"></i>
+										<input type="submit" id="add-picture" class="flex input-add-picture" value="+ Ajouter une photo"></input>
+										<p class="p-picture">jpg, png : 4mo max</p>
+									</div>
+									<div id="input-select-picture" class="invisible flex center align-center column">
+										<label for="image-input" id="customButton">Faites glisser votre image dans l'encadré blanc</label>
+										<div id="dropArea" class="drop-area invisible"></div>
+									</div>
+									<img id="previewImage" class="img-drop">
 								</div>
-								<div id="input-select-picture" class="invisible flex center align-center column">
-									<label for="image-input" id="customButton">Faites glisser votre image dans l'encadré blanc</label>
-									<div id="dropArea" class="drop-area invisible"></div>
-								</div>
-								<img id="previewImage" class="img-drop">
-							</div>
-							<div class="flex align-center column">
-								<h3 class="start input-img">Titre</h3>
-								<input type="text" id = "title" class="flex input-img">
-								<h3 class="start input-img">Catégorie</h3>
-								<input type="text" id="category" list="categoryOptions" class="flex input-img">
-									<datalist id="categoryOptions">
-										<option value="Tous">
-										<option value="Objets">
-										<option value="Appartements">
-										<option value="Hotels & restaurants">
-									</datalist>
-									<div class="border-wrap"></div>
-								<input type="submit" id="valid" value="Valider" class="center width-input-wrap grey">
-							</div>
+								<!-- <div class="flex center column align-center"> -->
+									<h3 class="start input-img">Titre</h3>
+									<input type="text" id = "title-new-work" class="flex input-img">
+									<h3 class="start input-img">Catégorie</h3>
+									<input type="text" id="category" list="categoryOptions" class="flex input-img">
+										<datalist id="categoryOptions">
+											<option value="Tous">
+											<option value="Objets">
+											<option value="Appartements">
+											<option value="Hotels & restaurants">
+										</datalist>
+										<p id ="error-new-work" class="invisible">
+											One of the fields is incorrectly entered</p>
+										<div class="border-wrap"></div>
+									<input type="submit" id="valid" value="Valider" class="center width-input-wrap grey">
+								<!-- </div> -->
+							</form>
 						</div>
 					</div>
 				</div>

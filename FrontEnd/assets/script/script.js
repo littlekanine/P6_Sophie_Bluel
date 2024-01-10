@@ -1,8 +1,8 @@
 // Variable Array
 
 export let works = [];
-export let newWorks = []
-let categories = []
+export let newWorks = [];
+// export let categories = [];
 
 // Variable buttons 
 const buttonsContainer = document.querySelector(".buttons");
@@ -16,8 +16,6 @@ const btnLogOut = document.getElementById("btn-logout");
 const editMode = document.querySelector(".edit-mode")
 const openModal = document.getElementById("open-modal");
 
-export const nameElement = document.createElement("p");
-
 // Initialization
 
 window.onload = async function () {
@@ -26,8 +24,6 @@ window.onload = async function () {
     await generateCategories(categories);
     await generateGallery(works);
 };
-
-// window.localStorage.clear();
 
 // Button outside API 
 
@@ -100,8 +96,8 @@ async function generateGallery(data) {
         data.forEach(work => {
             const workElement = document.createElement("figure");
             const imageElement = document.createElement("img");
+            const nameElement = document.createElement("p");
             imageElement.src = work.imageUrl;
-
             nameElement.innerText = work.title;
 
             workElement.appendChild(imageElement);
@@ -112,6 +108,7 @@ async function generateGallery(data) {
 }
 
 // export {generateGallery}
+
 
 const storedToken = sessionStorage.getItem("token");
 export {storedToken}

@@ -2,6 +2,11 @@
 import { works } from "./script.js"
 import { newWorks } from "./script.js";
 import { storedToken } from "./script.js";
+// import { categories } from "./script.js";
+
+const token = storedToken;
+
+const categoryOptions = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
 
 let regex = RegExp ("a-z0-9._-")
 
@@ -15,12 +20,12 @@ target.addEventListener('click', closeModal);
 
 const worksWrap = document.querySelector(".works-wrap")
 
-const titleWrap = document.getElementById("title-wrap")
-
 const addWorks = document.getElementById("add-works");
 addWorks.addEventListener("click" , openModaleAddWorks);
 
 const arrowReturn = document.querySelector(".arrow")
+
+let workId;
 
 // Function open/close modale
 
@@ -41,10 +46,10 @@ function openModale(e) {
 
 function closeModal(e) {
     e.preventDefault();
+    e.stopPropagation();
     if(modal === null) return;
-    if (!modalWrap.contains(e.target)) {
+    if (!modalWrap.contains(e.target) ) {
         target.classList.add("invisible");
-        modal = null;
     }
 }
 
@@ -52,29 +57,32 @@ function closeModal(e) {
 
 function generateGalleryWrap(works) {
 
+    worksWrap.innerHTML = "";
+
     works.forEach(work => {
 
         const workElement = document.createElement("figure");
         const imageElement = document.createElement("img");
-        const trashWrap = document.createElement("button")
-        const trashIcon = document.createElement("i")
+        const trashWrap = document.createElement("button");
+        trashWrap.type = "button";
+        const trashIcon = document.createElement("i");
 
-        workElement.appendChild(imageElement)
-        workElement.appendChild(trashWrap)
-        trashWrap.appendChild(trashIcon)
+        workElement.appendChild(imageElement);
+        workElement.appendChild(trashWrap);
+        trashWrap.appendChild(trashIcon);
+        trashWrap.dataset.workId = work.id;
 
-        trashWrap.classList.add("trash-wrap")
-        trashIcon.classList.add("trash-icone")
+        trashWrap.classList.add("trash-wrap");
+        trashIcon.classList.add("trash-icone");
         imageElement.src = work.imageUrl;
         
-        worksWrap.appendChild(workElement)
+        worksWrap.appendChild(workElement);
 
-        const workId = work.id
-        trashWrap.addEventListener("click" , function(e) {
-            e.preventDefault();   
-            console.log(workId)
-
-            deleteWork(workId)
+        workId = work.id;
+        trashWrap.addEventListener("click" , async function(e) {
+            e.preventDefault(); 
+            e.stopPropagation();
+            deleteWork(workId);
         });
     });    
 }
@@ -83,82 +91,112 @@ function generateGalleryWrap(works) {
 
 function openModaleAddWorks(e) {
     e.preventDefault();
-        const galleryModal = document.querySelector(".gallery-modal")
-        galleryModal.classList.add("invisible")
-        const addImg = document.querySelector(".div-picture")
-        addImg.classList.remove("invisible")
-        addImg.classList.add("flex")
-        
-        arrowReturn.addEventListener("click", function(e) {
-            e.preventDefault();
-            const pictureModal = document.querySelector(".div-picture");
-            pictureModal.classList.add("invisible")
-            galleryModal.classList.remove("invisible")
-        });
+    const galleryModal = document.querySelector(".gallery-modal")
+    galleryModal.classList.add("invisible")
+    const addImg = document.querySelector(".div-picture")
+    addImg.classList.remove("invisible")
+    addImg.classList.add("flex")
+    
+    arrowReturn.addEventListener("click", function(e) {
+        e.preventDefault();
+        const pictureModal = document.querySelector(".div-picture");
+        pictureModal.classList.add("invisible")
+        galleryModal.classList.remove("invisible")
+    });
 }
 
 //addWorks
 
-const buttonAddPicture = document.getElementById("button-add-picture");
-const inputSelectPicture = document.getElementById("input-select-picture");
-const addPicture = document.getElementById("add-picture");
-const pictureIcon = document.getElementById("picture-icone");
-const custombutton = document.getElementById("customButton");
-const dropArea = document.getElementById("dropArea"); 
-const previewImage = document.getElementById("previewImage");
+const elements = {
+    buttonAddPicture: document.getElementById("button-add-picture"),
+    inputSelectPicture: document.getElementById("input-select-picture"),
+    addPicture: document.getElementById("add-picture"),
+    pictureIcon: document.getElementById("picture-icone"),
+    custombutton: document.getElementById("customButton"),
+    dropArea: document.getElementById("dropArea"),
+    previewImage: document.getElementById("previewImage"),
+    titleInput: document.getElementById("title-new-work"),
+    categoryInput: document.getElementById("category"),
+    valid: document.getElementById("valid"),
+    errorNewWork: document.getElementById("error-new-work"),
+};
 
-function handleFile(file) {
-    const reader = new FileReader();
+async function handleFile(file, imageUrl) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
 
-    reader.onload = function (e) {
-        localStorage.setItem('image', reader.result);
-        previewImage.src = reader.result;
-    };
-    reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            localStorage.setItem('image', reader.result);
+            previewImage.src = reader.result;
+            resolve(reader.result);
+        };
+
+        reader.onerror = function (error) {
+            reject(error);
+        };
+
+        reader.readAsDataURL(file);
+    });
 }
 
-function createPictureForm() {
+async function createPictureForm() {
     event.preventDefault();
-    pictureIcon.classList.add("invisible");
-    buttonAddPicture.classList.add("invisible");
-    inputSelectPicture.classList.remove("invisible");
-    dropArea.classList.remove("invisible");
+    elements.pictureIcon.classList.add("invisible");
+    elements.buttonAddPicture.classList.add("invisible");
+    elements.inputSelectPicture.classList.remove("invisible");
+    elements.dropArea.classList.remove("invisible");
 
-    dropArea.addEventListener('dragover', function (event) {
+    elements.dropArea.addEventListener('dragover', function (event) {
         event.preventDefault();
-        dropArea.classList.remove("invisible");
+        elements.dropArea.classList.remove("invisible");
     });
 
-    dropArea.addEventListener('dragleave', function () {
-        dropArea.classList.remove("invisible");
-    });
-
-    dropArea.addEventListener('drop', function (event) {
+    elements.dropArea.addEventListener('drop', async function (event) {
         event.preventDefault();
-        dropArea.classList.add("invisible");
+        elements.dropArea.classList.add("invisible");
 
         const file = event.dataTransfer.files[0];
 
         if (file && file.type.startsWith('image/')) {
-            handleFile(file);
-            custombutton.classList.add("invisible")
+            elements.imageUrl = await handleFile(file);
+            handleFile(file, elements.imageUrl);
+            elements.custombutton.classList.add("invisible")
             console.log("Changement détecté (via glisser-déposer)");
         } else {
             console.log("Le fichier n'est pas une image.");
         }
     });
-
-    addPicture.removeEventListener("click", createPictureForm);
 }
 
-addPicture.addEventListener("click", createPictureForm);
+elements.addPicture.addEventListener("click", createPictureForm);
 
-const title = document.getElementById("title");
-title = stringify.JSON
-const category = document.getElementById("category")
+elements.valid.addEventListener("click", function(event) {
+    event.preventDefault();
+    const form = document.getElementById("my-form-new-work");
+
+    if (titleInput.value && categoryInput.value !== categoryOptions) {
+        addNewWorks();
+    }
+});
+
+async function addNewWorks(newWork) {
+    const picture = imageUrl;
+    const title = titleInput.value;
+    const category = categoryInput.value;
+    console.log(picture);
+
+    newWork = {
+        id: newWorks.length + 1,
+        title: title,
+        imageUrl: picture,
+        categoryId: category,
+        userId: 0, 
+    };
+    newWorks.push(newWork);
+    console.log(newWorks);
+}
 
 async function addWork (work) {
-    if (resultat) {
         const response = await fetch("http://localhost:5678/api/works", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -175,28 +213,23 @@ async function addWork (work) {
                 case 401:
                 console.log("Unauthorized")
                 break;
-            }
-        })
-    } else {
-        console.log("probleme")
-    }
+        }
+    })
 }
 
 // Delete work
 
 async function deleteWork(workId) {
-
-    const token = storedToken;
     const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`},
+        headers: {"Authorization": `Bearer ${token}`},
     });
-    console.log(response)
+    console.log(workId)
     try {
         switch(response.status) {
             case 200:
                 console.log('ID récupéré :', workId);
+                removeWorkFromUI(workId);
                 break;
             case 401 : 
                 console.log("Unauthorized")
@@ -209,5 +242,22 @@ async function deleteWork(workId) {
     };
 }
 
+function removeWorkFromUI(workId) {
+    const workElement = document.querySelector(`.trash-wrap[data-work-id="${workId}"]`);
+    if (workElement) {
+        console.log(workElement)
+        const workContainer = workElement.closest('figure');
+        if (workContainer) {
+            workContainer.remove();
+        }
+    }
+}
+
+
+
 // ajout : same same but different 
 // crea variable new work , que j'ajoute a mon tableau de works et regenerate gallery 
+
+// suppression : pas recall Api/ pas de refresh
+//event.listener sur les trash buttons pour chaque work dans la gallery 
+// dans l'event je recup l'id --> call API delete // verif du call API /le retrouver a partir de l'id
