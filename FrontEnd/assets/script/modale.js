@@ -1,6 +1,6 @@
 // Variable
 import { works } from "./script.js"
-import { newWorks } from "./script.js";
+// import { newWorks } from "./script.js";
 import { storedToken } from "./script.js";
 // import { categories } from "./script.js";
 
@@ -16,7 +16,6 @@ const modalLink = document.getElementById('open-modal');
 modalLink.addEventListener('click' , openModale);
 
 const target = document.getElementById('modal1');
-target.addEventListener('click', closeModal);
 
 const worksWrap = document.querySelector(".works-wrap")
 
@@ -46,12 +45,15 @@ function openModale(e) {
 
 function closeModal(e) {
     e.preventDefault();
-    e.stopPropagation();
-    if(modal === null) return;
-    if (!modalWrap.contains(e.target) ) {
+    if (modal !== null) {
+        target.classList.remove("flex");
         target.classList.add("invisible");
+        modal = null;
     }
 }
+
+const xMark = document.querySelector(".xmark")
+xMark.addEventListener("click", closeModal)
 
 // generate Gallery Wrap
 
@@ -70,7 +72,6 @@ function generateGalleryWrap(works) {
         workElement.appendChild(imageElement);
         workElement.appendChild(trashWrap);
         trashWrap.appendChild(trashIcon);
-        trashWrap.dataset.workId = work.id;
 
         trashWrap.classList.add("trash-wrap");
         trashIcon.classList.add("trash-icone");
@@ -78,11 +79,10 @@ function generateGalleryWrap(works) {
         
         worksWrap.appendChild(workElement);
 
-        workId = work.id;
+        const currentWorkId = work.id;
         trashWrap.addEventListener("click" , async function(e) {
-            e.preventDefault(); 
-            e.stopPropagation();
-            deleteWork(workId);
+        e.preventDefault(); 
+        deleteWork(currentWorkId)
         });
     });    
 }
@@ -96,12 +96,15 @@ function openModaleAddWorks(e) {
     const addImg = document.querySelector(".div-picture")
     addImg.classList.remove("invisible")
     addImg.classList.add("flex")
+    arrowReturn.classList.remove("hidden")
+    localStorage.setItem('modalClosed', 'true');
     
     arrowReturn.addEventListener("click", function(e) {
         e.preventDefault();
         const pictureModal = document.querySelector(".div-picture");
         pictureModal.classList.add("invisible")
         galleryModal.classList.remove("invisible")
+        arrowReturn.classList.add("hidden")
     });
 }
 
@@ -139,7 +142,7 @@ async function handleFile(file, imageUrl) {
     });
 }
 
-async function createPictureForm() {
+async function createPictureForm(event) {
     event.preventDefault();
     elements.pictureIcon.classList.add("invisible");
     elements.buttonAddPicture.classList.add("invisible");
@@ -205,7 +208,7 @@ async function addWork (work) {
         .then((response) => {
             switch(response.status) {
                 case 201:
-                    generateGalleryWrap(works);
+                    // generateGalleryWrap(works);
                 break;
                 case 400: 
                     console.log("Bad Request");
@@ -219,36 +222,33 @@ async function addWork (work) {
 
 // Delete work
 
-async function deleteWork(workId) {
-    const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+async function deleteWork(currentWorkId) {
+    
+    const response = await fetch(`http://localhost:5678/api/works/${currentWorkId}`, {
         method: "DELETE",
         headers: {"Authorization": `Bearer ${token}`},
     });
-    console.log(workId)
-    try {
-        switch(response.status) {
-            case 200:
-                console.log('ID récupéré :', workId);
-                removeWorkFromUI(workId);
-                break;
-            case 401 : 
-                console.log("Unauthorized")
-                break;
-            default:
-                throw new Error(`error : ${response.status}`);
-        }            
-    } catch (error) {
-            throw new Error(`error : ${error.message}`);
-    };
+    console.log(currentWorkId);
+    switch(response.status) {
+        case 200:
+            console.log("element supprimé")
+            break;
+        case 401 : 
+            console.log("Unauthorized")
+            break;
+        default:
+            throw new Error(`error : ${response.status}`);
+    }   
 }
 
-function removeWorkFromUI(workId) {
-    const workElement = document.querySelector(`.trash-wrap[data-work-id="${workId}"]`);
+function removeWorkFromUI(currentWorkId) {
+    const workElement = document.querySelector(`.trash-wrap[data-work-id="${currentWorkId}"]`);
     if (workElement) {
-        console.log(workElement)
+        localStorage.removeItem(workElement);
         const workContainer = workElement.closest('figure');
         if (workContainer) {
             workContainer.remove();
+            deleteWork
         }
     }
 }
