@@ -89,7 +89,7 @@ async function generateCategories(categories) {
     });
 }
 
-async function generateGallery(data) {
+export async function generateGallery(data) {
     const gallerySection = document.querySelector(".gallery");
     gallerySection.innerHTML = "";
 

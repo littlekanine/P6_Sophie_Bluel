@@ -2,7 +2,8 @@
 import { works } from "./script.js"
 // import { newWorks } from "./script.js";
 import { storedToken } from "./script.js";
-// import { categories } from "./script.js";
+
+localStorage.setItem('works', JSON.stringify(works));
 
 const token = storedToken;
 
@@ -24,8 +25,7 @@ addWorks.addEventListener("click" , openModaleAddWorks);
 
 const arrowReturn = document.querySelector(".arrow")
 
-let workId;
-
+let currentWorkId;
 // Function open/close modale
 
 let modal = null
@@ -78,11 +78,16 @@ function generateGalleryWrap(works) {
         imageElement.src = work.imageUrl;
         
         worksWrap.appendChild(workElement);
+        localStorage.setItem('works', JSON.stringify(work));
+        console.log(localStorage)
 
-        const currentWorkId = work.id;
-        trashWrap.addEventListener("click" , async function(e) {
-        e.preventDefault(); 
-        deleteWork(currentWorkId)
+        trashWrap.addEventListener("click", async function(e) {
+            e.preventDefault();
+            currentWorkId = work.id !== undefined ? work.id : null;
+            await deleteWork(currentWorkId);
+            console.log("cliqué");
+            localStorage.removeItem(work.currentWorkId)
+            console.log(localStorage)
         });
     });    
 }
@@ -223,38 +228,28 @@ async function addWork (work) {
 // Delete work
 
 async function deleteWork(currentWorkId) {
-    
-    const response = await fetch(`http://localhost:5678/api/works/${currentWorkId}`, {
-        method: "DELETE",
-        headers: {"Authorization": `Bearer ${token}`},
-    });
-    console.log(currentWorkId);
-    switch(response.status) {
-        case 200:
-            console.log("element supprimé")
-            break;
-        case 401 : 
-            console.log("Unauthorized")
-            break;
-        default:
-            throw new Error(`error : ${response.status}`);
-    }   
-}
-
-function removeWorkFromUI(currentWorkId) {
-    const workElement = document.querySelector(`.trash-wrap[data-work-id="${currentWorkId}"]`);
-    if (workElement) {
-        localStorage.removeItem(workElement);
-        const workContainer = workElement.closest('figure');
-        if (workContainer) {
-            workContainer.remove();
-            deleteWork
-        }
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${currentWorkId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        });
+        switch(response.status) {
+            case 204:
+                console.log(localStorage)
+                break;
+            case 401 : 
+                console.log("Unauthorized")
+                break;
+            default:
+                throw new Error(`error : ${response.status}`);
+        }   
+    } catch {
+        console.error('Erreur lors de la suppression du travail:', error);
     }
 }
-
-
-
 // ajout : same same but different 
 // crea variable new work , que j'ajoute a mon tableau de works et regenerate gallery 
 
