@@ -68,31 +68,23 @@
 								<div class="add-img flex center  align-center column">
 									<div id="button-add-picture" class="flex center align-center column">
 										<i class="fa-regular fa-image icone-picture" id="picture-icone"></i>
-										<input type="submit" id="add-picture" class="flex input-add-picture" value="+ Ajouter une photo"></input>
+										<label for="add-picture" class="flex input-add-picture">
+											<input type="file" id="add-picture" style="display: none;" class=".input-add-picture" accept="image/*" />
+											+ Ajouter une photo
+										</label>
 										<p class="p-picture">jpg, png : 4mo max</p>
 									</div>
-									<div id="input-select-picture" class="invisible flex center align-center column">
-										<label for="image-input" id="customButton">Faites glisser votre image dans l'encadré blanc</label>
-										<div id="dropArea" class="drop-area invisible"></div>
-									</div>
-									<img id="previewImage" class="img-drop">
+									<img id="selected-image" class="img-add">
 								</div>
-								<!-- <div class="flex center column align-center"> -->
-									<h3 class="start input-img">Titre</h3>
-									<input type="text" id = "title-new-work" class="flex input-img">
-									<h3 class="start input-img">Catégorie</h3>
-									<input type="text" id="category" list="categoryOptions" class="flex input-img">
-										<datalist id="categoryOptions">
-											<option value="Tous">
-											<option value="Objets">
-											<option value="Appartements">
-											<option value="Hotels & restaurants">
-										</datalist>
-										<p id ="error-new-work" class="invisible">
-											One of the fields is incorrectly entered</p>
-										<div class="border-wrap"></div>
-									<input type="submit" id="valid" value="Valider" class="center width-input-wrap grey">
-								<!-- </div> -->
+								<h3 class="start input-img">Titre</h3>
+								<input type="text" placeholder="Enter title for your picture" id = "title-new-work" class="flex input-img">
+								<h3 class="start input-img">Catégorie</h3>
+								<input type="text" id="category" list="categoryOptions" autocomplete="off" class="flex input-img">
+									<datalist id="categoryOptions"></datalist>
+									<p id ="error-new-work" class="invisible">
+										One of the fields is incorrectly entered</p>
+									<div class="border-wrap"></div>
+								<input type="submit" id="valid" value="Valider" class="center width-input-wrap">
 							</form>
 						</div>
 					</div>

@@ -1,15 +1,11 @@
 // Variable
-import { works } from "./script.js"
-// import { newWorks } from "./script.js";
-import { storedToken } from "./script.js";
+import { categoriesData, works, generateGallery, storedToken } from "./script.js"
 
 localStorage.setItem('works', JSON.stringify(works));
 
 const token = storedToken;
 
 const categoryOptions = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
-
-let regex = RegExp ("a-z0-9._-")
 
 const modalWrap = document.getElementById("modal-wrap")
 
@@ -57,6 +53,9 @@ xMark.addEventListener("click", closeModal)
 
 // generate Gallery Wrap
 
+// var storageData = localStorage.getItem('works');
+// console.log(storageData)
+
 function generateGalleryWrap(works) {
 
     worksWrap.innerHTML = "";
@@ -78,16 +77,15 @@ function generateGalleryWrap(works) {
         imageElement.src = work.imageUrl;
         
         worksWrap.appendChild(workElement);
-        localStorage.setItem('works', JSON.stringify(work));
-        console.log(localStorage)
 
         trashWrap.addEventListener("click", async function(e) {
             e.preventDefault();
-            currentWorkId = work.id !== undefined ? work.id : null;
-            await deleteWork(currentWorkId);
-            console.log("cliqué");
-            localStorage.removeItem(work.currentWorkId)
-            console.log(localStorage)
+            currentWorkId = work.id
+            works = works.filter(work => work.id !== currentWorkId);
+            generateGalleryWrap(works)
+            generateGallery(works)
+            console.log("ID de l'élément à supprimer :", currentWorkId);
+            await deleteWork(currentWorkId)
         });
     });    
 }
@@ -115,88 +113,48 @@ function openModaleAddWorks(e) {
 
 //addWorks
 
-const elements = {
-    buttonAddPicture: document.getElementById("button-add-picture"),
-    inputSelectPicture: document.getElementById("input-select-picture"),
-    addPicture: document.getElementById("add-picture"),
-    pictureIcon: document.getElementById("picture-icone"),
-    custombutton: document.getElementById("customButton"),
-    dropArea: document.getElementById("dropArea"),
-    previewImage: document.getElementById("previewImage"),
-    titleInput: document.getElementById("title-new-work"),
-    categoryInput: document.getElementById("category"),
-    valid: document.getElementById("valid"),
-    errorNewWork: document.getElementById("error-new-work"),
-};
+const buttonAddPicture = document.getElementById("button-add-picture");
+const inputSelectPicture = document.getElementById("input-select-picture");
+const addPicture = document.getElementById("add-picture");
+const pictureIcon = document.getElementById("picture-icone");
+const custombutton = document.getElementById("customButton");
+const valid = document.getElementById("valid");
+const errorNewWork = document.getElementById("error-new-work");
 
-async function handleFile(file, imageUrl) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+const selectedImage = document.getElementById("selected-image");
+let  selecteCategories = document.getElementById("categoryOptions")
 
-        reader.onload = function (e) {
-            localStorage.setItem('image', reader.result);
-            previewImage.src = reader.result;
-            resolve(reader.result);
-        };
-
-        reader.onerror = function (error) {
-            reject(error);
-        };
-
-        reader.readAsDataURL(file);
-    });
-}
-
-async function createPictureForm(event) {
-    event.preventDefault();
-    elements.pictureIcon.classList.add("invisible");
-    elements.buttonAddPicture.classList.add("invisible");
-    elements.inputSelectPicture.classList.remove("invisible");
-    elements.dropArea.classList.remove("invisible");
-
-    elements.dropArea.addEventListener('dragover', function (event) {
-        event.preventDefault();
-        elements.dropArea.classList.remove("invisible");
-    });
-
-    elements.dropArea.addEventListener('drop', async function (event) {
-        event.preventDefault();
-        elements.dropArea.classList.add("invisible");
-
-        const file = event.dataTransfer.files[0];
-
-        if (file && file.type.startsWith('image/')) {
-            elements.imageUrl = await handleFile(file);
-            handleFile(file, elements.imageUrl);
-            elements.custombutton.classList.add("invisible")
-            console.log("Changement détecté (via glisser-déposer)");
-        } else {
-            console.log("Le fichier n'est pas une image.");
+addPicture.addEventListener("change", function () {
+    const selectedFile = addPicture.files[0];
+        if (selectedFile) {
+            selectedImage.src = URL.createObjectURL(selectedFile)
+            buttonAddPicture.classList.add("invisible");
+            console.log(selectedImage);
         }
-    });
-}
-
-elements.addPicture.addEventListener("click", createPictureForm);
-
-elements.valid.addEventListener("click", function(event) {
-    event.preventDefault();
-    const form = document.getElementById("my-form-new-work");
-
-    if (titleInput.value && categoryInput.value !== categoryOptions) {
-        addNewWorks();
-    }
 });
+const imageUrl = selectedImage;
+
+valid.addEventListener("click" ,  function (e) {
+    e.preventDefault()
+    const titleInput = document.getElementById("title-new-work").value;
+    const categoryInput = document.getElementById("category").value;
+    const selectedCategoryObject = categoriesData.find(category => category.name === categoryInput);
+     if (titleInput === "" || categoryInput === "" ) {
+        errorNewWork.classList.remove("invisible")
+     } else {
+        errorNewWork.classList.add("invisible")
+        console.log(titleInput, categoryInput );
+     }
+     return
+})
+
 
 async function addNewWorks(newWork) {
-    const picture = imageUrl;
-    const title = titleInput.value;
-    const category = categoryInput.value;
     console.log(picture);
 
     newWork = {
         id: newWorks.length + 1,
         title: title,
-        imageUrl: picture,
         categoryId: category,
         userId: 0, 
     };
@@ -238,7 +196,7 @@ async function deleteWork(currentWorkId) {
         });
         switch(response.status) {
             case 204:
-                console.log(localStorage)
+                console.log("Supprimé");
                 break;
             case 401 : 
                 console.log("Unauthorized")
@@ -247,12 +205,14 @@ async function deleteWork(currentWorkId) {
                 throw new Error(`error : ${response.status}`);
         }   
     } catch {
-        console.error('Erreur lors de la suppression du travail:', error);
+        console.error('Erreur lors de la suppression du travail:');
     }
 }
 // ajout : same same but different 
 // crea variable new work , que j'ajoute a mon tableau de works et regenerate gallery 
 
-// suppression : pas recall Api/ pas de refresh
+// suppression : pas recall Api/ pas de refresh 
 //event.listener sur les trash buttons pour chaque work dans la gallery 
 // dans l'event je recup l'id --> call API delete // verif du call API /le retrouver a partir de l'id
+//enleve le work de la global avec javascript ("remove item")
+//si bien supprimer je regenere les gallery 
