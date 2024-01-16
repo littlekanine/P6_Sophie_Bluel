@@ -142,19 +142,23 @@ valid.addEventListener("click" ,  function (e) {
 
 let newWorks = [];
 
-function addNewWorks(titleInput, categoryInput, imageUrl) {
+async function addNewWorks(titleInput, categoryInput, imageUrl) {
     const selectedCategory = categoriesData.find(category => category.name === categoryInput);
 
     const formData = new FormData();
+
     formData.append('title', titleInput);
     formData.append('categoryId', selectedCategory.id);
-    formData.append('userId', 0);
-    formData.append('image', imageUrl);
+    formData.append('imageUrl', imageUrl);
+    
+   
+    for (const pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+    };
 
-    newWorks.push(formData);
-    console.log(newWorks);
+    newWorks.push(formData)
 
-    addWork (newWorks)
+    await addWork (newWorks)
 }
 
 // console.log(titleInput, selectedCategory.id, imageUrl);
@@ -164,13 +168,15 @@ async function addWork (newWorks) {
         method: "POST",
         headers: { 
             "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
         body: newWorks,
         })
         .then((response) => {
+            console.log(response)
             switch(response.status) {
                 case 201:
-                    // generateGalleryWrap(works);
+                    generateGalleryWrap(works);
                 break;
                 case 400: 
                     console.log("Bad Request");
@@ -182,6 +188,7 @@ async function addWork (newWorks) {
                     throw new Error(`Erreur HTTP! Statut : ${response.status}`)
         }
     })
+    .catch((error) => console.error('Error:', error));
 }
 
 // Delete work
