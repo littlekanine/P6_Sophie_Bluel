@@ -5,10 +5,6 @@ localStorage.setItem('works', JSON.stringify(works));
 
 const token = storedToken;
 
-const categoryOptions = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
-
-const modalWrap = document.getElementById("modal-wrap")
-
 const modalLink = document.getElementById('open-modal');
 modalLink.addEventListener('click' , openModale);
 
@@ -52,9 +48,6 @@ const xMark = document.querySelector(".xmark")
 xMark.addEventListener("click", closeModal)
 
 // generate Gallery Wrap
-
-// var storageData = localStorage.getItem('works');
-// console.log(storageData)
 
 function generateGalleryWrap(works) {
 
@@ -114,59 +107,65 @@ function openModaleAddWorks(e) {
 //addWorks
 
 const buttonAddPicture = document.getElementById("button-add-picture");
-const inputSelectPicture = document.getElementById("input-select-picture");
 const addPicture = document.getElementById("add-picture");
-const pictureIcon = document.getElementById("picture-icone");
-const custombutton = document.getElementById("customButton");
 const valid = document.getElementById("valid");
 const errorNewWork = document.getElementById("error-new-work");
+const validNewWork = document.getElementById("valid-new-work");
 
 const selectedImage = document.getElementById("selected-image");
-let  selecteCategories = document.getElementById("categoryOptions")
 
 addPicture.addEventListener("change", function () {
     const selectedFile = addPicture.files[0];
-        if (selectedFile) {
-            selectedImage.src = URL.createObjectURL(selectedFile)
+    if (selectedFile) {
+        selectedImage.src = URL.createObjectURL(selectedFile)
             buttonAddPicture.classList.add("invisible");
-            console.log(selectedImage);
-        }
+            console.log(selectedImage.src);
+    }
 });
-const imageUrl = selectedImage;
+// console.log(categoriesData)
 
 valid.addEventListener("click" ,  function (e) {
     e.preventDefault()
+    const imageUrl = selectedImage.src;
     const titleInput = document.getElementById("title-new-work").value;
     const categoryInput = document.getElementById("category").value;
-    const selectedCategoryObject = categoriesData.find(category => category.name === categoryInput);
-     if (titleInput === "" || categoryInput === "" ) {
+    const validCategories = categoriesData.map(category => category.name);
+     if ( titleInput === "" || (categoryInput !== "Tous" && !validCategories.includes(categoryInput)) || !imageUrl) {
         errorNewWork.classList.remove("invisible")
      } else {
-        errorNewWork.classList.add("invisible")
-        console.log(titleInput, categoryInput );
+        addNewWorks(titleInput, categoryInput, imageUrl);
+        errorNewWork.classList.add("invisible");
+        valid.classList.add("invisible");
+        validNewWork.classList.remove("invisible");
      }
-     return
 })
 
+let newWorks = [];
 
-async function addNewWorks(newWork) {
-    console.log(picture);
+function addNewWorks(titleInput, categoryInput, imageUrl) {
+    const selectedCategory = categoriesData.find(category => category.name === categoryInput);
 
-    newWork = {
-        id: newWorks.length + 1,
-        title: title,
-        categoryId: category,
-        userId: 0, 
-    };
-    newWorks.push(newWork);
+    const formData = new FormData();
+    formData.append('title', titleInput);
+    formData.append('categoryId', selectedCategory.id);
+    formData.append('userId', 0);
+    formData.append('image', imageUrl);
+
+    newWorks.push(formData);
     console.log(newWorks);
+
+    addWork (newWorks)
 }
 
-async function addWork (work) {
+// console.log(titleInput, selectedCategory.id, imageUrl);
+
+async function addWork (newWorks) {
         const response = await fetch("http://localhost:5678/api/works", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(work),
+        headers: { 
+            "Authorization": `Bearer ${token}`,
+        },
+        body: newWorks,
         })
         .then((response) => {
             switch(response.status) {
@@ -179,6 +178,8 @@ async function addWork (work) {
                 case 401:
                 console.log("Unauthorized")
                 break;
+                default:
+                    throw new Error(`Erreur HTTP! Statut : ${response.status}`)
         }
     })
 }
@@ -195,6 +196,7 @@ async function deleteWork(currentWorkId) {
             },
         });
         switch(response.status) {
+            // problem :/ ---> 200 not 204 ?
             case 204:
                 console.log("Supprimé");
                 break;

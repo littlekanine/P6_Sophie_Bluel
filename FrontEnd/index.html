@@ -77,12 +77,14 @@
 									<img id="selected-image" class="img-add">
 								</div>
 								<h3 class="start input-img">Titre</h3>
-								<input type="text" placeholder="Enter title for your picture" id = "title-new-work" class="flex input-img">
+								<input type="text" placeholder="Enter title for your picture" autocomplete="off" id = "title-new-work" class="flex input-img">
 								<h3 class="start input-img">Catégorie</h3>
 								<input type="text" id="category" list="categoryOptions" autocomplete="off" class="flex input-img">
 									<datalist id="categoryOptions"></datalist>
 									<p id ="error-new-work" class="invisible">
 										One of the fields is incorrectly entered</p>
+									<p id ="valid-new-work" class="invisible">
+										Project added successfully</p>
 									<div class="border-wrap"></div>
 								<input type="submit" id="valid" value="Valider" class="center width-input-wrap">
 							</form>

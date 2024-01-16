@@ -3,6 +3,7 @@
 export let works = [];
 export let newWorks = [];
 export let categoriesData = [];
+console.log(categoriesData)
 // export let categories = [];
 
 // Variable buttons 
@@ -71,26 +72,27 @@ async function fetchWorks() {
 export {fetchData}
 
 export async function generateCategories(categories) {
+    console.log(categories);
     buttonsContainer.appendChild(buttonTous)
     const datalist = document.getElementById("categoryOptions");
     datalist.innerHTML = ""
 
     categories.forEach(categorie => {
-        
         const buttonFiltres = document.createElement("button");
         buttonsContainer.appendChild(buttonFiltres)
         buttonFiltres.classList.add("button-filtres")
         buttonFiltres.innerText = categorie.name  
 
         buttonFiltres.addEventListener("click", async () => {
+            console.log(categorie.name);
             const filteredWorks = works.filter(function (work){
-                console.log(works)
-                return work.category.name === categorie.name;
+                return work.category.id === categorie.id;
             });
-            categoriesData = categories;
             await generateGallery(filteredWorks);
         });  
     });
+    categoriesData = categories;
+
     categories.forEach(categorie => {
         const option = document.createElement("option");
         option.value = categorie.name;
