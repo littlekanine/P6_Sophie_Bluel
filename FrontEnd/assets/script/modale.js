@@ -74,7 +74,6 @@ function generateGalleryWrap(works) {
         trashWrap.addEventListener("click", async function(e) {
             e.preventDefault();
             currentWorkId = work.id
-            console.log("ID de l'élément à supprimer :", currentWorkId);
             works = works.filter(work => work.id !== currentWorkId);
             // console.log(works)
             // generateGalleryWrap(works);
@@ -120,30 +119,32 @@ addPicture.addEventListener("change", function () {
     if (selectedFile) {
         selectedImage.src = URL.createObjectURL(selectedFile)
             buttonAddPicture.classList.add("invisible");
-            console.log(selectedImage.src);
     }
 });
-// console.log(categoriesData)
 
 valid.addEventListener("click" ,  function (e) {
     e.preventDefault()
     const imageUrl = selectedImage.src;
-    const titleInput = document.getElementById("title-new-work").value;
-    const categoryInput = document.getElementById("category").value;
+    let titleInput = document.getElementById("title-new-work");
+    const categoryInput = document.getElementById("category");
     const validCategories = categoriesData.map(category => category.name);
-     if ( titleInput === "" || (!validCategories.includes(categoryInput)) || !imageUrl) {
+     if ( titleInput.value === "" || (!validCategories.includes(categoryInput.value)) || !imageUrl) {
         errorNewWork.classList.remove("invisible")
+        validNewWork.classList.add("invisible")
      } else {
-        addNewWorks(titleInput, categoryInput, imageUrl);
+        addNewWorks(titleInput.value, categoryInput.value, imageUrl);
         errorNewWork.classList.add("invisible");
-        valid.classList.add("invisible");
         validNewWork.classList.remove("invisible");
+        titleInput.value =""
+        categoryInput.value =""
+        buttonAddPicture.classList.remove("invisible");
+        selectedImage.src = ""
      }
 })
 
 let newWorks = [];
 
-async function addNewWorks(titleInput, categoryInput, imageUrl) {
+async function addNewWorks(titleInput, categoryInput) {
 
     const selectedCategory = categoriesData.find(category => category.name === categoryInput);
 
@@ -151,19 +152,6 @@ async function addNewWorks(titleInput, categoryInput, imageUrl) {
     formDataWork.append('title', titleInput);
     formDataWork.append('category', selectedCategory.id);
     formDataWork.append('image', addPicture.files[0])
-
-    // const response = await fetch(imageUrl);
-    // const blob = await response.blob();
-
-    // const imageFile = new File([blob], 'image.jpg', { type: blob.type });
-
-    // formDataWork.append('image', imageFile);
-
-    console.log("FormData:", formDataWork);
-
-    // const request = new XMLHttpRequest();
-    // request.open("POST", "http://localhost:5678/api/works");
-    // request.send(formDataWork);
 
     await addWork(formDataWork);
 }
@@ -183,9 +171,7 @@ async function addWork(formDataWork) {
         switch (response.status) {
             case 201:
                 const responseData = await response.json();
-                console.log(responseData);
                 works.push(responseData);
-                console.log("Done", works);
                 generateGalleryWrap(works);
                 generateGallery(works)
                 break;
@@ -207,7 +193,6 @@ async function addWork(formDataWork) {
 // Delete work
 
 async function deleteWork(currentWorkId) {
-    try {
         const response = await fetch(`http://localhost:5678/api/works/${currentWorkId}`, {
             method: "DELETE",
             headers: {
@@ -215,9 +200,7 @@ async function deleteWork(currentWorkId) {
                 'Content-Type': 'application/json'
             },
         });
-        console.log(response.status)
         switch(response.status) {
-            // problem :/ ---> 200 not 204 ?
             case 204:
                 console.log(works)
                 const index = works.findIndex((work) => work.id === currentWorkId);
@@ -227,23 +210,10 @@ async function deleteWork(currentWorkId) {
                 }
                 generateGalleryWrap(works);
                 generateGallery(works)
-                console.log("Supprimé");
                 break;
             case 401 : 
-                console.log("Unauthorized");
                 break;
             default:
                 throw new Error(`error : ${response.status}`);
         }   
-    } catch {
-        console.error('Erreur lors de la suppression du travail:');
-    }
 }
-// ajout : same same but different 
-// crea variable new work , que j'ajoute a mon tableau de works et regenerate gallery 
-
-// suppression : pas recall Api/ pas de refresh 
-//event.listener sur les trash buttons pour chaque work dans la gallery 
-// dans l'event je recup l'id --> call API delete // verif du call API /le retrouver a partir de l'id
-//enleve le work de la global avec javascript ("remove item")
-//si bien supprimer je regenere les gallery 
