@@ -74,11 +74,12 @@ function generateGalleryWrap(works) {
         trashWrap.addEventListener("click", async function(e) {
             e.preventDefault();
             currentWorkId = work.id
-            works = works.filter(work => work.id !== currentWorkId);
-            generateGalleryWrap(works)
-            generateGallery(works)
             console.log("ID de l'élément à supprimer :", currentWorkId);
-            await deleteWork(currentWorkId)
+            works = works.filter(work => work.id !== currentWorkId);
+            // console.log(works)
+            // generateGalleryWrap(works);
+            // generateGallery(works)
+            await deleteWork(currentWorkId);
         });
     });    
 }
@@ -87,20 +88,20 @@ function generateGalleryWrap(works) {
 
 function openModaleAddWorks(e) {
     e.preventDefault();
-    const galleryModal = document.querySelector(".gallery-modal")
-    galleryModal.classList.add("invisible")
-    const addImg = document.querySelector(".div-picture")
-    addImg.classList.remove("invisible")
-    addImg.classList.add("flex")
-    arrowReturn.classList.remove("hidden")
+    const galleryModal = document.querySelector(".gallery-modal");
+    galleryModal.classList.add("invisible");
+    const addImg = document.querySelector(".div-picture");
+    addImg.classList.remove("invisible");
+    addImg.classList.add("flex");
+    arrowReturn.classList.remove("hidden");
     localStorage.setItem('modalClosed', 'true');
     
     arrowReturn.addEventListener("click", function(e) {
         e.preventDefault();
         const pictureModal = document.querySelector(".div-picture");
-        pictureModal.classList.add("invisible")
-        galleryModal.classList.remove("invisible")
-        arrowReturn.classList.add("hidden")
+        pictureModal.classList.add("invisible");
+        galleryModal.classList.remove("invisible");
+        arrowReturn.classList.add("hidden");
     });
 }
 
@@ -130,7 +131,7 @@ valid.addEventListener("click" ,  function (e) {
     const titleInput = document.getElementById("title-new-work").value;
     const categoryInput = document.getElementById("category").value;
     const validCategories = categoriesData.map(category => category.name);
-     if ( titleInput === "" || (categoryInput !== "Tous" && !validCategories.includes(categoryInput)) || !imageUrl) {
+     if ( titleInput === "" || (!validCategories.includes(categoryInput)) || !imageUrl) {
         errorNewWork.classList.remove("invisible")
      } else {
         addNewWorks(titleInput, categoryInput, imageUrl);
@@ -143,52 +144,64 @@ valid.addEventListener("click" ,  function (e) {
 let newWorks = [];
 
 async function addNewWorks(titleInput, categoryInput, imageUrl) {
+
     const selectedCategory = categoriesData.find(category => category.name === categoryInput);
 
-    const formData = new FormData();
+    const formDataWork = new FormData();
+    formDataWork.append('title', titleInput);
+    formDataWork.append('category', selectedCategory.id);
+    formDataWork.append('image', addPicture.files[0])
 
-    formData.append('title', titleInput);
-    formData.append('categoryId', selectedCategory.id);
-    formData.append('imageUrl', imageUrl);
-    
-   
-    for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-    };
+    // const response = await fetch(imageUrl);
+    // const blob = await response.blob();
 
-    newWorks.push(formData)
+    // const imageFile = new File([blob], 'image.jpg', { type: blob.type });
 
-    await addWork (newWorks)
+    // formDataWork.append('image', imageFile);
+
+    console.log("FormData:", formDataWork);
+
+    // const request = new XMLHttpRequest();
+    // request.open("POST", "http://localhost:5678/api/works");
+    // request.send(formDataWork);
+
+    await addWork(formDataWork);
 }
 
-// console.log(titleInput, selectedCategory.id, imageUrl);
+async function addWork(formDataWork) {
+    console.log(formDataWork);
 
-async function addWork (newWorks) {
+    try {
         const response = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: { 
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        },
-        body: newWorks,
-        })
-        .then((response) => {
-            console.log(response)
-            switch(response.status) {
-                case 201:
-                    generateGalleryWrap(works);
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+            body: formDataWork,
+        });
+
+        switch (response.status) {
+            case 201:
+                const responseData = await response.json();
+                console.log(responseData);
+                works.push(responseData);
+                console.log("Done", works);
+                generateGalleryWrap(works);
+                generateGallery(works)
                 break;
-                case 400: 
-                    console.log("Bad Request");
+            case 400:
+                console.log("Bad request");
                 break;
-                case 401:
-                console.log("Unauthorized")
+            case 401:
+                console.log("nono autorise");
                 break;
-                default:
-                    throw new Error(`Erreur HTTP! Statut : ${response.status}`)
+            default:
+                throw new Error(`Erreur HTTP! Statut : ${response.status}`);
         }
-    })
-    .catch((error) => console.error('Error:', error));
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 // Delete work
@@ -202,13 +215,22 @@ async function deleteWork(currentWorkId) {
                 'Content-Type': 'application/json'
             },
         });
+        console.log(response.status)
         switch(response.status) {
             // problem :/ ---> 200 not 204 ?
             case 204:
+                console.log(works)
+                const index = works.findIndex((work) => work.id === currentWorkId);
+                console.log(index)
+                if (index !== -1) {
+                works.splice(index, 1);
+                }
+                generateGalleryWrap(works);
+                generateGallery(works)
                 console.log("Supprimé");
                 break;
             case 401 : 
-                console.log("Unauthorized")
+                console.log("Unauthorized");
                 break;
             default:
                 throw new Error(`error : ${response.status}`);

@@ -72,7 +72,6 @@ async function fetchWorks() {
 export {fetchData}
 
 export async function generateCategories(categories) {
-    console.log(categories);
     buttonsContainer.appendChild(buttonTous)
     const datalist = document.getElementById("categoryOptions");
     datalist.innerHTML = ""
@@ -98,9 +97,6 @@ export async function generateCategories(categories) {
         option.value = categorie.name;
         datalist.appendChild(option);
     });
-    const optionTous = document.createElement("option");
-    optionTous.value = "Tous";
-    datalist.appendChild(optionTous);
 }
 
 export async function generateGallery(data) {
