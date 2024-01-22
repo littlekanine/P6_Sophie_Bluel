@@ -105,7 +105,7 @@ async function deleteWork(currentWorkId) {
         case 401:
             break;
         default:
-            throw new Error(`error : ${response.status}`);
+            throw new Error(`erreur : ${response.status}`);
     }
 }
 
@@ -119,7 +119,6 @@ function openModaleAddWorks(e) {
     addImg.classList.remove("invisible");
     addImg.classList.add("flex");
     arrowReturn.classList.remove("hidden");
-    // localStorage.setItem('modalClosed', 'true');
 
     arrowReturn.addEventListener("click", function (e) {
         e.preventDefault();
