@@ -3,19 +3,17 @@
 export let works = [];
 export let newWorks = [];
 export let categoriesData = [];
-console.log(categoriesData)
-// export let categories = [];
 
 // Variable buttons 
 const buttonsContainer = document.querySelector(".buttons");
 const buttonTous = document.createElement("button");
 
 //variable Login
-const logIn = document.getElementById("btn-login")
+const logIn = document.getElementById("btn-login");
 const btnLogOut = document.getElementById("btn-logout");
 
 //variable modal
-const editMode = document.querySelector(".edit-mode")
+const editMode = document.querySelector(".edit-mode");
 const openModal = document.getElementById("open-modal");
 
 // Initialization
@@ -29,12 +27,12 @@ window.onload = async function () {
 
 // Button outside API 
 
-buttonTous.classList.add("button-filtres", "buttonTous")
+buttonTous.classList.add("button-filtres", "buttonTous");
     buttonTous.innerText = "Tous"
 
 buttonTous.addEventListener("click", async function () {
     document.querySelector(".gallery").innerHTML=""
-    const allWorks = await fetchWorks()
+    const allWorks = await fetchWorks();
     generateGallery(allWorks);
 })
     
@@ -59,28 +57,28 @@ async function fetchData(apiEndPoint) {
         
         return response;
     } catch (error) {
-          console.error(`Une erreur s'est produite : ${error.message}`);
+        console.error(`Une erreur s'est produite : ${error.message}`);
     }
 }
 async function fetchCategories() {
-    return fetchData("categories")
+    return fetchData("categories");
 }
 async function fetchWorks() {
-    return fetchData("works")
+    return fetchData("works");
 }
 
-export {fetchData}
+export {fetchData};
 
 export async function generateCategories(categories) {
-    buttonsContainer.appendChild(buttonTous)
+    buttonsContainer.appendChild(buttonTous);
     const datalist = document.getElementById("categoryOptions");
     datalist.innerHTML = ""
 
     categories.forEach(categorie => {
         const buttonFiltres = document.createElement("button");
-        buttonsContainer.appendChild(buttonFiltres)
-        buttonFiltres.classList.add("button-filtres")
-        buttonFiltres.innerText = categorie.name  
+        buttonsContainer.appendChild(buttonFiltres);
+        buttonFiltres.classList.add("button-filtres");
+        buttonFiltres.innerText = categorie.name;  
 
         buttonFiltres.addEventListener("click", async () => {
             console.log(categorie.name);
@@ -99,11 +97,11 @@ export async function generateCategories(categories) {
     });
 }
 
-export async function generateGallery(data) {
+export async function generateGallery(works) {
     const gallerySection = document.querySelector(".gallery");
     gallerySection.innerHTML = "";
 
-        data.forEach(work => {
+        works.forEach(work => {
             const workElement = document.createElement("figure");
             const imageElement = document.createElement("img");
             const nameElement = document.createElement("p");
@@ -117,33 +115,26 @@ export async function generateGallery(data) {
         });
 }
 
-// export {generateGallery}
-
-
 const storedToken = sessionStorage.getItem("token");
-export {storedToken}
+
+export {storedToken};
 
 if (storedToken) {
-    buttonsContainer.classList.add("invisible")
+    buttonsContainer.classList.add("invisible");
     openModal.classList.remove("invisible");
-    editMode.classList.remove("invisible")
-    logIn.classList.add("invisible")
+    editMode.classList.remove("invisible");
+    logIn.classList.add("invisible");
 
-    console.log(storedToken)
 } else {
-    const logOut = document.getElementById("btn-logout")
-    logOut.classList.add("invisible")
+    const logOut = document.getElementById("btn-logout");
+    logOut.classList.add("invisible");
     openModal.classList.add("invisible");
-    editMode.classList.add("invisible")
-    logIn.classList.remove("invisible")
-
-    console.log(storedToken)
-
+    editMode.classList.add("invisible");
+    logIn.classList.remove("invisible");
 }
 
 btnLogOut.addEventListener("click", logOut)
 
 function logOut() {
-    sessionStorage.removeItem("token")
-    console.log("token retiré")
+    sessionStorage.removeItem("token");
 }

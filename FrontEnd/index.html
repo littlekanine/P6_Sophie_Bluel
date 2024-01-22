@@ -24,8 +24,8 @@
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<a href="./assets/login.html" class="decoration-none"><li id="btn-login">login</li></a>
-			<a href="./index.html" class="decoration-none"><li id="btn-logout">log out</li></a>
+			<li id="btn-login"><a href="./assets/login.html" class="decoration-none">login</a></li>
+			<li id="btn-logout"><a href="./index.html" class="decoration-none">log out</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -77,15 +77,12 @@
 									<img id="selected-image" class="img-add">
 								</div>
 								<h3 class="start input-img">Titre</h3>
-								<!-- <label for="title-new-work" id = "label-new"></label> -->
 								<input type="text" placeholder="Enter title for your picture" autocomplete="off" id = "title-new-work" class="flex input-img">
 								<h3 class="start input-img">Catégorie</h3>
 								<input type="text" id="category" list="categoryOptions" autocomplete="off" class="flex input-img">
 									<datalist id="categoryOptions"></datalist>
-									<p id ="error-new-work" class="invisible">
-										One of the fields is incorrectly entered</p>
-									<p id ="valid-new-work" class="invisible">
-										Project added successfully</p>
+									<p id ="error-new-work" class="invisible">Un des champs n'est pas correctement renseigné</p>
+									<p id ="valid-new-work" class="invisible">Votre projet à bien été ajouté</p>
 									<div class="border-wrap"></div>
 								<input type="submit" id="valid" value="Valider" class="center width-input-wrap">
 							</form>
@@ -94,10 +91,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="buttons filtres">
-		</div>
-		<div class="gallery">
-		</div>
+		<div class="buttons filtres"></div>
+		<div class="gallery"></div>
 	</section>
 	<section id="contact">
 		<h2>Contact</h2>
