@@ -35,7 +35,7 @@ async function fetchDataLogin(email, password) {
             default:
                 baliseEmail.classList.add("invalid");
                 balisePassword.classList.add("invalid");
-                errorMessage.textContent = "Input error : invalid email or password";
+                errorMessage.textContent = "Email ou mot de passe invalide";
                 throw new Error(`Erreur HTTP! Statut : ${response.status}`);
         }
     })
@@ -47,6 +47,6 @@ async function fetchDataLogin(email, password) {
             return response.token;
         }
 
-        throw new Error(`No token in the response : ${response}`);
+        throw new Error(`Il n'y a pas de token dans la réponse : ${response}`);
     });
 }
