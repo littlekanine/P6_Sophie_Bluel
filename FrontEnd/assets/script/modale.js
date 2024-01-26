@@ -163,6 +163,7 @@ valid.addEventListener("click", function (e) {
         categoryInput.value = "";
         buttonAddPicture.classList.remove("invisible");
         selectedImage.src = "";
+        imageUrl =""
     }
 });
 
