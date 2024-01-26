@@ -138,7 +138,6 @@ const errorNewWork = document.getElementById("error-new-work");
 const validNewWork = document.getElementById("valid-new-work");
 
 const selectedImage = document.getElementById("selected-image");
-
 addPicture.addEventListener("change", function () {
     const selectedFile = addPicture.files[0];
     if (selectedFile) {
