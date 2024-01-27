@@ -74,26 +74,21 @@
 										</label>
 										<p class="p-picture">jpg, png : 4mo max</p>
 									</div>
-									<img id="selected-image" class="img-add">
-										</div>
-										<h3 class="start input-img">Titre</h3>
-										<input type="text" placeholder="Enter title for your picture" autocomplete="off" id = "title-new-work" class="flex input-img">
-										<h3 class="start input-img">Catégorie</h3>
-										<input type="text" id="category" list="categoryOptions" autocomplete="off" class="flex input-img">
-										<datalist id="categoryOptions"></datalist>
-										<p id ="error-new-work" class="invisible">
-										One of the fields is incorrectly entered</p>
-										<p id ="valid-new-work" class="invisible">
-										Project added successfully</p>
-										<div class="border-wrap"></div>
-										<input type="submit" id="valid" value="Valider" class="center width-input-wrap">
-									</form>
-								</div> 
-							</div>
-						</div>
+									<div class = image-container>
+										<img id="selected-image" class="img-add">
+									</div>
+								</div>
+								<label for="title-new-work" class="start input-img">Titre</label>
+								<input type="text" placeholder="Entrez votre titre" autocomplete="off" id = "title-new-work" class="flex input-img">
+								<label for="category" class="start input-img">Catégorie</label>
+								<select id="category" class="flex input-img"></select>
+								<div class="border-wrap"></div>
+								<button type="submit" id="valid" class="center width-input-wrap button-valid border-none grey" disabled>Valider</button>
+							</form>
+						</div> 
 					</div>
 				</div>
-				</div>
+			</div>
 		</div>
 		<div class="buttons filtres">
 		</div>

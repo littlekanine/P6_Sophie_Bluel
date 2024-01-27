@@ -61,7 +61,7 @@ async function fetchData(apiEndPoint) {
     }
 }
 async function fetchCategories() {
-    return fetchData("categories");
+    return fetchData("categories");filteredWorks
 }
 async function fetchWorks() {
     return fetchData("works");
@@ -71,8 +71,7 @@ export {fetchData};
 
 export async function generateCategories(categories) {
     buttonsContainer.appendChild(buttonTous);
-    const datalist = document.getElementById("categoryOptions");
-    datalist.innerHTML = ""
+    const select = document.getElementById("category");
 
     categories.forEach(categorie => {
         const buttonFiltres = document.createElement("button");
@@ -80,8 +79,12 @@ export async function generateCategories(categories) {
         buttonFiltres.classList.add("button-filtres");
         buttonFiltres.innerText = categorie.name;  
 
+        const option = document.createElement("option");
+        option.value = categorie.name;
+        option.text = categorie.name
+        select.appendChild(option);
+
         buttonFiltres.addEventListener("click", async () => {
-            console.log(categorie.name);
             const filteredWorks = works.filter(function (work){
                 return work.category.id === categorie.id;
             });
@@ -89,12 +92,6 @@ export async function generateCategories(categories) {
         });  
     });
     categoriesData = categories;
-
-    categories.forEach(categorie => {
-        const option = document.createElement("option");
-        option.value = categorie.name;
-        datalist.appendChild(option);
-    });
 }
 
 export async function generateGallery(works) {

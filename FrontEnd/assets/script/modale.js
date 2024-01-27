@@ -119,6 +119,7 @@ function openModaleAddWorks(e) {
     addImg.classList.remove("invisible");
     addImg.classList.add("flex");
     arrowReturn.classList.remove("hidden");
+    categoryInput.value = "";
 
     arrowReturn.addEventListener("click", function (e) {
         e.preventDefault();
@@ -134,41 +135,76 @@ function openModaleAddWorks(e) {
 const buttonAddPicture = document.getElementById("button-add-picture");
 const addPicture = document.getElementById("add-picture");
 const valid = document.getElementById("valid");
-const errorNewWork = document.getElementById("error-new-work");
-const validNewWork = document.getElementById("valid-new-work");
-
+const titleInput = document.getElementById("title-new-work");
+const categoryInput = document.getElementById("category");
 const selectedImage = document.getElementById("selected-image");
+
+titleInput.addEventListener("input", updateValidity);
+categoryInput.addEventListener("input", updateValidity);
+selectedImage.addEventListener("load", updateValidity);
+
+categoryInput.value = null
+valid.disabled = true;
+
+const trashWrapImg = document.createElement("button")
+const trashIcon = document.createElement("i");
+
 addPicture.addEventListener("change", function () {
     const selectedFile = addPicture.files[0];
+
     if (selectedFile) {
         selectedImage.src = URL.createObjectURL(selectedFile);
         buttonAddPicture.classList.add("invisible");
+
+        const imageContainer = document.querySelector(".image-container")
+        trashWrapImg.classList.add("trash-wrap-delete-image");
+        trashIcon.classList.add("trash-icone");
+        trashWrapImg.appendChild(trashIcon)
+        imageContainer.appendChild(trashWrapImg);
+        trashWrapImg.classList.remove("invisible");
+
+        trashWrapImg.addEventListener("click", function (e) {
+            e.preventDefault();
+            buttonAddPicture.classList.remove("invisible");
+            selectedImage.src = "";
+            addPicture.value = null;
+            trashWrapImg.remove()
+            trashWrapImg.remove()
+            valid.disabled = true;
+            valid.classList.add("grey")
+        });
     }
 });
+
+function updateValidity() {
+    const validCategories = categoriesData.map(category => category.name);
+
+    if (titleInput.value !== "" && (validCategories.includes(categoryInput.value)) && addPicture.files.length > 0) {
+        valid.disabled = false;
+        valid.classList.add("green");
+        valid.classList.remove("grey");
+    } else {
+        valid.disabled = true;
+        valid.classList.add("grey");
+        valid.classList.remove("green");
+    } 
+}
 
 valid.addEventListener("click", function (e) {
     e.preventDefault();
-    const imageUrl = selectedImage.src;
-    let titleInput = document.getElementById("title-new-work");
-    const categoryInput = document.getElementById("category");
-    const validCategories = categoriesData.map(category => category.name);
-    if (titleInput.value === "" || (!validCategories.includes(categoryInput.value)) || imageUrl === "") {
-        errorNewWork.classList.remove("invisible");
-        validNewWork.classList.add("invisible");
-    } else {
-        addNewWorks(titleInput.value, categoryInput.value, imageUrl);
-        errorNewWork.classList.add("invisible");
-        validNewWork.classList.remove("invisible");
-        titleInput.value = "";
-        categoryInput.value = "";
-        buttonAddPicture.classList.remove("invisible");
-        selectedImage.src = "";
-        imageUrl =""
-    }
-});
+    addNewWorks(titleInput.value, categoryInput.value);
+    titleInput.value = null;
+    categoryInput.value = "";
+    buttonAddPicture.classList.remove("invisible");
+    selectedImage.src = ""
+    addPicture.value = null
+    valid.disabled = true
+    valid.classList.add("grey");
+    trashWrapImg.remove();
+    trashIcon.remove();
+});  
 
-async function addNewWorks(titleInput, categoryInput) {
-
+function addNewWorks(titleInput, categoryInput) {
     const selectedCategory = categoriesData.find(category => category.name === categoryInput);
 
     const formDataWork = new FormData();
@@ -176,7 +212,7 @@ async function addNewWorks(titleInput, categoryInput) {
     formDataWork.append('category', selectedCategory.id);
     formDataWork.append('image', addPicture.files[0]);
 
-    await addWork(formDataWork);
+    addWork(formDataWork);
 }
 
 async function addWork(formDataWork) {
