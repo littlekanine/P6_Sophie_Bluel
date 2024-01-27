@@ -209,7 +209,12 @@ li:hover {
 	font-size: 16px;
 }
 
-.button-filtres:hover {
+.button-filtres:focus {
+	background-color: #1D6154;
+	color: white;
+}
+
+.button-tous {
 	background-color: #1D6154;
 	color: white;
 }
@@ -437,8 +442,6 @@ input, select {
 
 .trash-wrap-delete-image {
 	position: relative;
-	/* bottom: 200px;
-	left: 55px; */
 	justify-content: flex-end;
 	border-radius: 2px;
 	width: 17px;

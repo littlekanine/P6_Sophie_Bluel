@@ -19,6 +19,7 @@ const openModal = document.getElementById("open-modal");
 // Initialization
 
 window.onload = async function () {
+    buttonTous.classList.add("button-tous")
     works = await fetchWorks();
     const categories = await fetchCategories();
     await generateCategories(categories);
@@ -61,7 +62,7 @@ async function fetchData(apiEndPoint) {
     }
 }
 async function fetchCategories() {
-    return fetchData("categories");filteredWorks
+    return fetchData("categories");
 }
 async function fetchWorks() {
     return fetchData("works");
@@ -85,8 +86,11 @@ export async function generateCategories(categories) {
         select.appendChild(option);
 
         buttonFiltres.addEventListener("click", async () => {
+            buttonFiltres.classList.add("green")
+            buttonTous.classList.remove("button-tous")
             const filteredWorks = works.filter(function (work){
                 return work.category.id === categorie.id;
+                
             });
             await generateGallery(filteredWorks);
         });  
