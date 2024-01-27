@@ -22,8 +22,8 @@ window.onload = async function () {
     buttonTous.classList.add("button-tous")
     works = await fetchWorks();
     const categories = await fetchCategories();
-    await generateCategories(categories);
-    await generateGallery(works);
+    generateCategories(categories);
+    generateGallery(works);
 };
 
 // Button outside API 
@@ -40,9 +40,9 @@ buttonTous.addEventListener("click", async function () {
 
 // Function 
 
-async function fetchData(apiEndPoint) {
+function fetchData(apiEndPoint) {
     try {
-        const response = await fetch(`http://localhost:5678/api/${apiEndPoint}`)
+        const response = fetch(`http://localhost:5678/api/${apiEndPoint}`)
             .then((response) => {
                 switch(response.status) {
                     case 200:
@@ -61,16 +61,16 @@ async function fetchData(apiEndPoint) {
         console.error(`Une erreur s'est produite : ${error.message}`);
     }
 }
-async function fetchCategories() {
+function fetchCategories() {
     return fetchData("categories");
 }
-async function fetchWorks() {
+function fetchWorks() {
     return fetchData("works");
 }
 
 export {fetchData};
 
-export async function generateCategories(categories) {
+export function generateCategories(categories) {
     buttonsContainer.appendChild(buttonTous);
     const select = document.getElementById("category");
 
@@ -92,13 +92,13 @@ export async function generateCategories(categories) {
                 return work.category.id === categorie.id;
                 
             });
-            await generateGallery(filteredWorks);
+            generateGallery(filteredWorks);
         });  
     });
     categoriesData = categories;
 }
 
-export async function generateGallery(works) {
+export function generateGallery(works) {
     const gallerySection = document.querySelector(".gallery");
     gallerySection.innerHTML = "";
 

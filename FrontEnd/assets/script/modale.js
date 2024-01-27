@@ -74,11 +74,11 @@ function generateGalleryWrap(works) {
 
         worksWrap.appendChild(workElement);
 
-        trashWrap.addEventListener("click", async function (e) {
+        trashWrap.addEventListener("click", function (e) {
             e.preventDefault();
             currentWorkId = work.id;
             works = works.filter(work => work.id !== currentWorkId);
-            await deleteWork(currentWorkId);
+            deleteWork(currentWorkId);
         });
     });
 }
@@ -215,10 +215,10 @@ function addNewWorks(titleInput, categoryInput) {
     addWork(formDataWork);
 }
 
-async function addWork(formDataWork) {
+function addWork(formDataWork) {
 
     try {
-        const response = await fetch("http://localhost:5678/api/works", {
+        const response = fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -228,7 +228,7 @@ async function addWork(formDataWork) {
 
         switch (response.status) {
             case 201:
-                const responseData = await response.json();
+                const responseData = response.json();
                 works.push(responseData);
                 generateGalleryWrap(works);
                 generateGallery(works);

@@ -10,19 +10,19 @@ errorMessage.classList.add("errorMessage")
 
 // Event Listener
 
-formLogin.addEventListener("submit", async (event) => {
+formLogin.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const email = baliseEmail.value;
     const password = balisePassword.value;
 
-    await fetchDataLogin(email, password);
+    fetchDataLogin(email, password);
 });
 
 // function for data recovery from the API
 
-async function fetchDataLogin(email, password) {
-    const response = await fetch("http://localhost:5678/api/users/login", {
+function fetchDataLogin(email, password) {
+    const response = fetch("http://localhost:5678/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
