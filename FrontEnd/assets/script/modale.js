@@ -29,7 +29,6 @@ function openModale(e) {
     e.preventDefault();
     if (modal === null) {
         modal = target;
-
         target.classList.remove("invisible");
         target.classList.add("flex");
     }
@@ -113,13 +112,13 @@ async function deleteWork(currentWorkId) {
 
 function openModaleAddWorks(e) {
     e.preventDefault();
-    const galleryModal = document.querySelector(".gallery-modal");
-    galleryModal.classList.add("invisible");
-    const addImg = document.querySelector(".div-picture");
-    addImg.classList.remove("invisible");
-    addImg.classList.add("flex");
-    arrowReturn.classList.remove("hidden");
-    categoryInput.value = "";
+        const galleryModal = document.querySelector(".gallery-modal");
+        galleryModal.classList.add("invisible");
+        const addImg = document.querySelector(".div-picture");
+        addImg.classList.remove("invisible");
+        addImg.classList.add("flex");
+        arrowReturn.classList.remove("hidden");
+        categoryInput.value = "";
 
     arrowReturn.addEventListener("click", function (e) {
         e.preventDefault();
@@ -143,10 +142,10 @@ titleInput.addEventListener("input", updateValidity);
 categoryInput.addEventListener("input", updateValidity);
 selectedImage.addEventListener("load", updateValidity);
 
-categoryInput.value = null
+categoryInput.value = null;
 valid.disabled = true;
 
-const trashWrapImg = document.createElement("button")
+const trashWrapImg = document.createElement("button");
 const trashIcon = document.createElement("i");
 
 addPicture.addEventListener("change", function () {
@@ -156,10 +155,10 @@ addPicture.addEventListener("change", function () {
         selectedImage.src = URL.createObjectURL(selectedFile);
         buttonAddPicture.classList.add("invisible");
 
-        const imageContainer = document.querySelector(".image-container")
+        const imageContainer = document.querySelector(".image-container");
         trashWrapImg.classList.add("trash-wrap-delete-image");
         trashIcon.classList.add("trash-icone");
-        trashWrapImg.appendChild(trashIcon)
+        trashWrapImg.appendChild(trashIcon);
         imageContainer.appendChild(trashWrapImg);
         trashWrapImg.classList.remove("invisible");
 
@@ -168,10 +167,10 @@ addPicture.addEventListener("change", function () {
             buttonAddPicture.classList.remove("invisible");
             selectedImage.src = "";
             addPicture.value = null;
-            trashWrapImg.remove()
-            trashWrapImg.remove()
+            trashWrapImg.remove();
+            trashWrapImg.remove();
             valid.disabled = true;
-            valid.classList.add("grey")
+            valid.classList.add("grey");
         });
     }
 });
@@ -196,9 +195,9 @@ valid.addEventListener("click", function (e) {
     titleInput.value = null;
     categoryInput.value = "";
     buttonAddPicture.classList.remove("invisible");
-    selectedImage.src = ""
-    addPicture.value = null
-    valid.disabled = true
+    selectedImage.src = "";
+    addPicture.value = null;
+    valid.disabled = true;
     valid.classList.add("grey");
     trashWrapImg.remove();
     trashIcon.remove();

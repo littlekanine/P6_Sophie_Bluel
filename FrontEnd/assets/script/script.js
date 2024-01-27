@@ -19,7 +19,7 @@ const openModal = document.getElementById("open-modal");
 // Initialization
 
 window.onload = async function () {
-    buttonTous.classList.add("button-tous")
+    buttonTous.classList.add("button-tous");
     works = await fetchWorks();
     const categories = await fetchCategories();
     generateCategories(categories);
@@ -29,10 +29,10 @@ window.onload = async function () {
 // Button outside API 
 
 buttonTous.classList.add("button-filtres", "buttonTous");
-    buttonTous.innerText = "Tous"
+    buttonTous.innerText = "Tous";
 
 buttonTous.addEventListener("click", async function () {
-    document.querySelector(".gallery").innerHTML=""
+    document.querySelector(".gallery").innerHTML="";
     const allWorks = await fetchWorks();
     generateGallery(allWorks);
 })
@@ -86,8 +86,8 @@ export function generateCategories(categories) {
         select.appendChild(option);
 
         buttonFiltres.addEventListener("click", async () => {
-            buttonFiltres.classList.add("green")
-            buttonTous.classList.remove("button-tous")
+            buttonFiltres.classList.add("green");
+            buttonTous.classList.remove("button-tous");
             const filteredWorks = works.filter(function (work){
                 return work.category.id === categorie.id;
                 
@@ -134,7 +134,7 @@ if (storedToken) {
     logIn.classList.remove("invisible");
 }
 
-btnLogOut.addEventListener("click", logOut)
+btnLogOut.addEventListener("click", logOut);
 
 function logOut() {
     sessionStorage.removeItem("token");

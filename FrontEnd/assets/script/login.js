@@ -3,19 +3,17 @@
 const formLogin = document.querySelector("form");
 const baliseEmail = document.getElementById("email");
 const balisePassword = document.getElementById("password");
-const inputContainer = document.getElementById("inputContainer")
-const errorMessage = document.createElement("p")
-inputContainer.appendChild(errorMessage)
-errorMessage.classList.add("errorMessage")
+const inputContainer = document.getElementById("inputContainer");
+const errorMessage = document.createElement("p");
+inputContainer.appendChild(errorMessage);
+errorMessage.classList.add("errorMessage");
 
 // Event Listener
 
 formLogin.addEventListener("submit", (event) => {
     event.preventDefault();
-
     const email = baliseEmail.value;
     const password = balisePassword.value;
-
     fetchDataLogin(email, password);
 });
 
@@ -43,10 +41,8 @@ function fetchDataLogin(email, password) {
         if(response.token) {
             window.sessionStorage.setItem("token", response.token);
             window.location.href = "../index.html";
-
             return response.token;
         }
-
         throw new Error(`Il n'y a pas de token dans la réponse : ${response}`);
     });
 }
