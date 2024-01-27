@@ -98,7 +98,7 @@ export function generateCategories(categories) {
     categoriesData = categories;
 }
 
-export function generateGallery(works) {
+export async function generateGallery(works) {
     const gallerySection = document.querySelector(".gallery");
     gallerySection.innerHTML = "";
 

@@ -203,7 +203,7 @@ valid.addEventListener("click", function (e) {
     trashIcon.remove();
 });  
 
-function addNewWorks(titleInput, categoryInput) {
+async function addNewWorks(titleInput, categoryInput) {
     const selectedCategory = categoriesData.find(category => category.name === categoryInput);
 
     const formDataWork = new FormData();
@@ -214,10 +214,10 @@ function addNewWorks(titleInput, categoryInput) {
     addWork(formDataWork);
 }
 
-function addWork(formDataWork) {
+async function addWork(formDataWork) {
 
     try {
-        const response = fetch("http://localhost:5678/api/works", {
+        const response = await fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -227,7 +227,7 @@ function addWork(formDataWork) {
 
         switch (response.status) {
             case 201:
-                const responseData = response.json();
+                const responseData = await response.json();
                 works.push(responseData);
                 generateGalleryWrap(works);
                 generateGallery(works);
